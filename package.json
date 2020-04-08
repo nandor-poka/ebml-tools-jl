@@ -7,9 +7,9 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/my_name/myextension",
+  "homepage": "https://github.com/nandor-poka/ebml-tools-jl",
   "bugs": {
-    "url": "https://github.com/my_name/myextension/issues"
+    "url": "https://github.com/nandor-poka/ebml-tools-jl/issues"
   },
   "license": "BSD-3-Clause",
   "author": "Dr. Nándor Póka",
