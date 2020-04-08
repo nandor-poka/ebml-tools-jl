@@ -3,9 +3,10 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-//import { requestAPI } from './embl-tools-jl';
+import { requestAPI } from './embl-tools-jl';
 import { LabIcon } from '@jupyterlab/ui-components';
 import { ILauncher } from '@jupyterlab/launcher';
+import { PathExt } from "@jupyterlab/coreutils";
 
 import emb_logo from '../style/EMBL_logo.svg';
 
@@ -22,7 +23,7 @@ const extension: JupyterFrontEndPlugin<void> = {
   id: 'embl-tools-jl',
   autoStart: true,
   requires: [ILauncher],
-  activate: (
+  activate: async (
     app: JupyterFrontEnd,
     launcher: ILauncher
     ) => {
@@ -32,29 +33,44 @@ const extension: JupyterFrontEndPlugin<void> = {
         name: 'launcher:clustalo',
         svgstr: emb_logo
       });
+      let found_extension = false;
+      let embl_tools_path = "";
       console.log('JupyterLab extension embl-tools-jl is activated!');
-
-      commands.addCommand(clustalo, {
-        label: 'ClustalO',
-        caption: 'ClustalO webservice',
-        icon: icon,
-        execute: async => {
-          return commands.execute('docmanager:open', {
-            path: 'EMBL-Tools/clustalo.ipynb',
-            factory: FACTORY
-          });
+       // GET request
+      try {
+        const data = await requestAPI<any>('findtools');
+        console.log(data);
+        found_extension = data.found;
+        if (found_extension){
+          embl_tools_path = PathExt.normalize(data.path);
         }
-      });  
-     
-      // Add the clustalo to the launcher
-      if (launcher) {
-        launcher.add({
-          command: clustalo,
-          category: CATEGORY,
-          rank: 1
-        });
-      } 
-    }
+        console.log(embl_tools_path)
+      } catch (reason) {
+        console.error(`Error on GET embl-tools-jl/findtools.\n${reason}`);
+      }
+      if (found_extension){
+        commands.addCommand(clustalo, {
+          label: 'ClustalO',
+          caption: 'ClustalO webservice',
+          icon: icon,
+          execute: async => {
+            return commands.execute('docmanager:open', {
+              path: embl_tools_path+'/clustalo.ipynb',
+              factory: FACTORY
+            });
+          }
+        });  
+      
+        // Add the clustalo to the launcher
+        if (launcher) {
+          launcher.add({
+            command: clustalo,
+            category: CATEGORY,
+            rank: 1
+          });
+        } 
+      }
+  }  
 };
 
 export default extension;

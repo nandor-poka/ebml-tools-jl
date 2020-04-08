@@ -107,3 +107,9 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/python
+
+# Log files *.log
+*.log
+
+# Lock files *.lock
+*.lock
