@@ -23,37 +23,35 @@ const extension: JupyterFrontEndPlugin<void> = {
   id: 'embl-tools-jl',
   autoStart: true,
   requires: [ILauncher],
-  activate: async ( app: JupyterFrontEnd, launcher: ILauncher ) => {
+  activate: async (app: JupyterFrontEnd, launcher: ILauncher) => {
     const { commands } = app;
     const clustalo = CommandIDs.clustalo;
     const icon = new LabIcon({
       name: 'launcher:clustalo',
       svgstr: embLogo
     });
-    let found_extension = false;
-    let embl_tools_path = '';
+    let foundExtension = false;
+    let emblToolsPath = '';
     console.log('JupyterLab extension embl-tools-jl is activated!');
     // GET request
     try {
       const data = await requestAPI<any>('findtools');
-      console.log(data);
-      found_extension = data.found;
-      if (found_extension){
-        embl_tools_path = PathExt.normalize(data.path);
+      foundExtension = data.found;
+      if (foundExtension){
+        emblToolsPath = PathExt.normalize(data.path);
       }
-      console.log(embl_tools_path)
     } catch (reason) {
       console.error(`Error on GET embl-tools-jl/findtools.\n${reason}`);
     }
       
-    if (found_extension){
+    if (foundExtension){
       commands.addCommand(clustalo, {
         label: 'ClustalO',
         caption: 'ClustalO webservice',
         icon: icon,
         execute: async => {
           return commands.execute('docmanager:open', {
-            path: embl_tools_path+'/clustalo.ipynb',
+            path: emblToolsPath+'/clustalo.ipynb',
             factory: FACTORY
           });
         }
