@@ -37,26 +37,26 @@ const extension: JupyterFrontEndPlugin<void> = {
     try {
       const data = await requestAPI<any>('findtools');
       foundExtension = data.found;
-      if (foundExtension){
+      if (foundExtension) {
         emblToolsPath = PathExt.normalize(data.path);
       }
     } catch (reason) {
       console.error(`Error on GET embl-tools-jl/findtools.\n${reason}`);
     }
-      
-    if (foundExtension){
+
+    if (foundExtension) {
       commands.addCommand(clustalo, {
         label: 'ClustalO',
         caption: 'ClustalO webservice',
         icon: icon,
         execute: async => {
           return commands.execute('docmanager:open', {
-            path: emblToolsPath+'/clustalo.ipynb',
+            path: emblToolsPath + '/clustalo.ipynb',
             factory: FACTORY
           });
         }
-      });  
-      
+      });
+
       // Add the clustalo to the launcher
       if (launcher) {
         launcher.add({
@@ -64,9 +64,9 @@ const extension: JupyterFrontEndPlugin<void> = {
           category: CATEGORY,
           rank: 1
         });
-      } 
+      }
     }
-  }  
+  }
 };
 
 export default extension;
