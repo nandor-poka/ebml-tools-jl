@@ -21,7 +21,9 @@ class EBML_tools_handler(APIHandler):
             if entry.is_dir():
                 if entry.name == 'EMBL-Tools':
                     return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name
-                self.scan_disk(entry.path)
+                subdir_scan=self.scan_disk(entry.path)
+                if subdir_scan:
+                    return subdir_scan
         return None
 
     # The following decorator should be present on all verb methods (head, get, post, 
