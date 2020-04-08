@@ -55,7 +55,7 @@ with open("README.md", "r") as fh:
 setup_args = dict(
     name=name,
     version=version,
-    url="https://github.com/my_name/myextension",
+    url="https://github.com/nandor-poka/ebml-tools-jl",
     author="Dr. Nándor Póka",
     description="An extension adding Launcher shortcuts to JupyterLab for EMBL Tools",
     long_description= long_description,
@@ -69,7 +69,7 @@ setup_args = dict(
     include_package_data=True,
     license="BSD-3-Clause",
     platforms="Linux, Mac OS X, Windows",
-    keywords=["Jupyter", "JupyterLab"],
+    keywords=["Jupyter", "JupyterLab", "EMBL", "EMBL-Tools", "Bioinformatics"],
     classifiers=[
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",

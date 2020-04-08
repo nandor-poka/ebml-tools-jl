@@ -5,7 +5,10 @@
   "keywords": [
     "jupyter",
     "jupyterlab",
-    "jupyterlab-extension"
+    "jupyterlab-extension",
+    "EMBL",
+    "EMBL-Tools",
+    "Bioinformatics"
   ],
   "homepage": "https://github.com/nandor-poka/ebml-tools-jl",
   "bugs": {
