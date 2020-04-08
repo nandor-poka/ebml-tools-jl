@@ -1,8 +1,9 @@
+
 # embl-tools-jl
 
 ![Github Actions Status](https://github.com/my_name/myextension/workflows/Build/badge.svg)
 
-An extension adding Launcher shortcuts to JupyterLab for EMBL Tools
+An extension adding Launcher shortcuts to JupyterLab for EMBL Tools.
 
 
 This extension is composed of a Python package named `embl_tools_jl`
