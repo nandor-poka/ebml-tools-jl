@@ -13,11 +13,9 @@ import embLogo from '../style/EMBL_logo.svg';
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools';
 
-
-
-const toolNameMapping = new Map<string, string>()
-toolNameMapping.set('clustalo.ipynb','ClustalO')
-toolNameMapping.set('ncbiBlast.ipynb', 'NCBI BLAST')
+const toolNameMapping = new Map<string, string>();
+toolNameMapping.set('clustalo.ipynb', 'ClustalO');
+toolNameMapping.set('ncbiBlast.ipynb', 'NCBI BLAST');
 
 /**
  * Initialization data for the embl-tools-jl extension.
@@ -48,10 +46,10 @@ const extension: JupyterFrontEndPlugin<void> = {
     }
 
     if (foundExtension) {
-      let tools = new Array();
+      let tools = [];
       try {
-        const data = await requestAPI<any>('toolcheck',{
-          body: JSON.stringify({path: emblToolsPath}),
+        const data = await requestAPI<any>('toolcheck', {
+          body: JSON.stringify({ path: emblToolsPath }),
           method: 'POST'
         });
         tools = data.tools;
@@ -59,32 +57,32 @@ const extension: JupyterFrontEndPlugin<void> = {
         console.error(`Error on GET embl-tools-jl/toolcheck.\n${reason}`);
       }
 
-      for (let index in tools) {
+      for (const index in tools) {
         let rank = 1;
-        commands.addCommand(commandPrefix+tools[index].toLowerCase().split('.')[0],{
-          label: toolNameMapping.get(tools[index]),
-          caption: toolNameMapping.get(tools[index])+' webservice',
-          icon: icon,
-          execute: async => {
-            return commands.execute('docmanager:open', {
-              path: emblToolsPath + '/'+tools[index],
-              factory: FACTORY,
-            });
+        commands.addCommand(
+          commandPrefix + tools[index].toLowerCase().split('.')[0],
+          {
+            label: toolNameMapping.get(tools[index]),
+            caption: toolNameMapping.get(tools[index]) + ' webservice',
+            icon: icon,
+            execute: async => {
+              return commands.execute('docmanager:open', {
+                path: emblToolsPath + '/' + tools[index],
+                factory: FACTORY
+              });
+            }
           }
-        });
-              // Add the clustalo to the launcher
-      if (launcher) {
-        launcher.add({
-          command: commandPrefix+tools[index].toLowerCase().split('.')[0] ,
-          category: CATEGORY,
-          rank: rank
-        });
-      }
+        );
+        // Add the clustalo to the launcher
+        if (launcher) {
+          launcher.add({
+            command: commandPrefix + tools[index].toLowerCase().split('.')[0],
+            category: CATEGORY,
+            rank: rank
+          });
+        }
         ++rank;
       }
-     
-
-
     }
   }
 };
