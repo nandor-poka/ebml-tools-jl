@@ -13,9 +13,12 @@ import embLogo from '../style/EMBL_logo.svg';
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools';
 
-namespace CommandIDs {
-  export const clustalo = 'emlb-tools-jl:clustalo';
-}
+
+
+const toolNameMapping = new Map<string, string>()
+toolNameMapping.set('clustalo.ipynb','ClustalO')
+toolNameMapping.set('ncbiBlast.ipynb', 'NCBI BLAST')
+
 /**
  * Initialization data for the embl-tools-jl extension.
  */
@@ -25,7 +28,7 @@ const extension: JupyterFrontEndPlugin<void> = {
   requires: [ILauncher],
   activate: async (app: JupyterFrontEnd, launcher: ILauncher) => {
     const { commands } = app;
-    const clustalo = CommandIDs.clustalo;
+    const commandPrefix = 'embl-tools-jl:';
     const icon = new LabIcon({
       name: 'launcher:clustalo',
       svgstr: embLogo
@@ -35,36 +38,53 @@ const extension: JupyterFrontEndPlugin<void> = {
     console.log('JupyterLab extension embl-tools-jl is activated!');
     // GET request
     try {
-      const data = await requestAPI<any>('findtools');
+      const data = await requestAPI<any>('startup');
       foundExtension = data.found;
       if (foundExtension) {
         emblToolsPath = PathExt.normalize(data.path);
       }
     } catch (reason) {
-      console.error(`Error on GET embl-tools-jl/findtools.\n${reason}`);
+      console.error(`Error on GET embl-tools-jl/startup.\n${reason}`);
     }
 
     if (foundExtension) {
-      commands.addCommand(clustalo, {
-        label: 'ClustalO',
-        caption: 'ClustalO webservice',
-        icon: icon,
-        execute: async => {
-          return commands.execute('docmanager:open', {
-            path: emblToolsPath + '/clustalo.ipynb',
-            factory: FACTORY
-          });
-        }
-      });
+      let tools = new Array();
+      try {
+        const data = await requestAPI<any>('toolcheck',{
+          body: JSON.stringify({path: emblToolsPath}),
+          method: 'POST'
+        });
+        tools = data.tools;
+      } catch (reason) {
+        console.error(`Error on GET embl-tools-jl/toolcheck.\n${reason}`);
+      }
 
-      // Add the clustalo to the launcher
+      for (let index in tools) {
+        let rank = 1;
+        commands.addCommand(commandPrefix+tools[index].toLowerCase().split('.')[0],{
+          label: toolNameMapping.get(tools[index]),
+          caption: toolNameMapping.get(tools[index])+' webservice',
+          icon: icon,
+          execute: async => {
+            return commands.execute('docmanager:open', {
+              path: emblToolsPath + '/'+tools[index],
+              factory: FACTORY,
+            });
+          }
+        });
+              // Add the clustalo to the launcher
       if (launcher) {
         launcher.add({
-          command: clustalo,
+          command: commandPrefix+tools[index].toLowerCase().split('.')[0] ,
           category: CATEGORY,
-          rank: 1
+          rank: rank
         });
       }
+        ++rank;
+      }
+     
+
+
     }
   }
 };
