@@ -46,7 +46,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     }
 
     if (foundExtension) {
-      let tools = [];
+      let tools: string[] = [];
       try {
         const data = await requestAPI<any>('toolcheck', {
           body: JSON.stringify({ path: emblToolsPath }),
