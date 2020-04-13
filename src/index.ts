@@ -62,8 +62,14 @@ const extension: JupyterFrontEndPlugin<void> = {
         commands.addCommand(
           commandPrefix + tools[index].toLowerCase().split('.')[0],
           {
-            label: toolNameMapping.get(tools[index]),
-            caption: toolNameMapping.get(tools[index]) + ' webservice',
+            label:
+              toolNameMapping.get(tools[index]) === undefined
+                ? tools[index].toLowerCase().split('.')[0]
+                : toolNameMapping.get(tools[index]),
+            caption:
+              toolNameMapping.get(tools[index]) === undefined
+                ? tools[index].toLowerCase().split('.')[0] + ' webservice'
+                : toolNameMapping.get(tools[index]) + ' webservice',
             icon: icon,
             execute: async => {
               return commands.execute('docmanager:open', {
