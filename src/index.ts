@@ -95,11 +95,11 @@ const extension: JupyterFrontEndPlugin<void> = {
       // Create submenu for the tool's own menu for tools.
       const toolsSubMenu = new Menu({ commands });
       toolsSubMenu.title.label = 'Tools';
-      toolsMainMenu.addItem({type:'submenu',submenu: toolsSubMenu});
+      toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenu });
 
       const settingsSubMenu = new Menu({ commands });
       settingsSubMenu.title.label = 'Settings';
-      toolsMainMenu.addItem({type:'submenu',submenu: settingsSubMenu});
+      toolsMainMenu.addItem({ type: 'submenu', submenu: settingsSubMenu });
       let tools: string[] = [];
       try {
         const data = await requestAPI<any>('toolcheck', {
@@ -141,17 +141,12 @@ const extension: JupyterFrontEndPlugin<void> = {
           rank: rank
         });
         toolsSubMenu.addItem({
-          command: commandPrefix + tools[index].toLowerCase().split('.')[0],
-          
+          command: commandPrefix + tools[index].toLowerCase().split('.')[0]
         });
-        
+
         ++rank;
       }
-
-
     }
-
-
   }
 };
 
