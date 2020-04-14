@@ -1,0 +1,19 @@
+{
+    "title": "EMBL-Tools JupyterLab settings",
+    "description": "Settings EMBL-Tools JupyterLab extension.",
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string",
+        "title": "Email address",
+        "description": "Email address to be automatically filled in EMBL-Tools notebooks.",
+        "default": "someone@example.com"
+      },
+      "outdir": {
+        "type": "string",
+        "title": "Default save directory",
+        "description": "Absolute path of the directory where result should be saved automatically.",
+        "default": "results"
+      }
+    }
+}
