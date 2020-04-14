@@ -17,14 +17,17 @@ class Startup_handler(APIHandler):
         return self.contents_manager.root_dir
 
     def scan_disk(self, path):
-        for entry in os.scandir(path):
-            if entry.is_dir():
-                if entry.name == 'EMBL-Tools':
-                    return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name 
-                subdir_scan=self.scan_disk(entry.path)
-                if subdir_scan:
-                    return subdir_scan
-        return None
+        try:
+            for entry in os.scandir(path):
+                if entry.is_dir():
+                    if entry.name == 'EMBL-Tools':
+                        return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name 
+                    subdir_scan=self.scan_disk(entry.path)
+                    if subdir_scan:
+                        return subdir_scan
+            return None
+        except PermissionError:
+            print ('Permission denied: '+ path)
 
     # The following decorator should be present on all verb methods (head, get, post, 
     # patch, put, delete, options) to ensure only authorized user can request the 
