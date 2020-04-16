@@ -21,6 +21,7 @@ const toolNameMapping = new Map<string, string>();
 toolNameMapping.set('clustalo.ipynb', 'ClustalO');
 toolNameMapping.set('ncbiBlast.ipynb', 'NCBI BLAST');
 
+
 /**
  * Initialization data for the embl-tools-jl extension.
  */
@@ -43,6 +44,18 @@ const extension: JupyterFrontEndPlugin<void> = {
     let foundExtension = false;
     let emblToolsPath = '';
     console.log('JupyterLab extension embl-tools-jl is activated!');
+    // Create a menu in the main menu bar
+    const toolsMainMenu = new Menu({ commands });
+    toolsMainMenu.title.label = 'EMBL-Tools';
+    mainMenu.addMenu(toolsMainMenu, { rank: 80 });
+    // Create submenu for the tool's own menu for tools.
+    const toolsSubMenu = new Menu({ commands });
+    toolsSubMenu.title.label = 'Tools';
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenu });
+
+    const settingsSubMenu = new Menu({ commands });
+    settingsSubMenu.title.label = 'Settings';
+    toolsMainMenu.addItem({ type: 'submenu', submenu: settingsSubMenu });
     /**
      * Load the settings for this extension
      *
@@ -54,6 +67,13 @@ const extension: JupyterFrontEndPlugin<void> = {
       const outdir = setting.get('outdir').composite as string;
 
       console.log(`Settings are  set to '${email}' and flag to '${outdir}'`);
+      commands.addCommand(commandPrefix+'emailSettings',{
+        label:'Set default email',
+        execute:() =>{
+          window.alert('email settings.')
+        }
+      });
+      settingsSubMenu.addItem({command:commandPrefix+'emailSettings'});
     }
 
     // Wait for the application to be restored and
@@ -66,10 +86,6 @@ const extension: JupyterFrontEndPlugin<void> = {
         // Listen for your plugin setting changes using Signal
         setting.changed.connect(loadSetting);
 
-        // Create a menu
-        //const settingsMenu = new Menu({ commands });
-        //settingsMenu.title.label = 'EMBL-Tools Settings';
-        //mainMenu.addMenu(settingsMenu, { rank: 80 });
       })
       .catch(reason => {
         console.error(
@@ -88,18 +104,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     }
 
     if (foundExtension) {
-      // Create a menu in the main menu bar
-      const toolsMainMenu = new Menu({ commands });
-      toolsMainMenu.title.label = 'EMBL-Tools';
-      mainMenu.addMenu(toolsMainMenu, { rank: 80 });
-      // Create submenu for the tool's own menu for tools.
-      const toolsSubMenu = new Menu({ commands });
-      toolsSubMenu.title.label = 'Tools';
-      toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenu });
-
-      const settingsSubMenu = new Menu({ commands });
-      settingsSubMenu.title.label = 'Settings';
-      toolsMainMenu.addItem({ type: 'submenu', submenu: settingsSubMenu });
+      
       let tools: string[] = [];
       try {
         const data = await requestAPI<any>('toolcheck', {

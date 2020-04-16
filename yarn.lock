@@ -156,7 +156,7 @@
     codemirror "~5.49.2"
     react "~16.9.0"
 
-"@jupyterlab/coreutils@^4.1.0":
+"@jupyterlab/coreutils@^4.0.0", "@jupyterlab/coreutils@^4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@jupyterlab/coreutils/-/coreutils-4.1.0.tgz#ac6cee0558b7c15786e0a210ac3b40a86aec8e84"
   integrity sha512-2lcXHd8ZCUuqoiZYK9Xs4HHX46jkdtsdmfgvgg/3odFXFMdv4Twau7fqr9URgRl5JYszPPpItGJIorAVipVfNQ==
@@ -205,7 +205,7 @@
     "@lumino/widgets" "^1.11.1"
     react "~16.9.0"
 
-"@jupyterlab/mainmenu@^2.1.0":
+"@jupyterlab/mainmenu@^2.0.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@jupyterlab/mainmenu/-/mainmenu-2.1.0.tgz#09de1a303766223888d9851c80038a242ea4e05b"
   integrity sha512-JT/qnUQVEZ5TLaD0bdSdED+hzEkdYrIQks8eh+T/h+zUadbXIDyTOPEhIW+vhBZAhX01QIK2j6doP9HSrum68w==

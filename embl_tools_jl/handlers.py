@@ -4,8 +4,10 @@ from notebook.base.handlers import APIHandler
 from notebook.utils import url_path_join
 import tornado
 import os
+import logging
 
 class Startup_handler(APIHandler):
+    logging.basicConfig(filename='./debug.log',filemode='w', format='%(levelname)s:%(message)s', level=logging.DEBUG)
     @property
     def contents_manager(self):
         """Currently configured notebook server ContentsManager."""
@@ -27,7 +29,9 @@ class Startup_handler(APIHandler):
                         return subdir_scan
             return None
         except PermissionError:
-            print ('Permission denied: '+ path)
+            logging.warning('Permission denied: '+ path)
+        except OSError as error:
+            logging.warning('OSError code: %i at %s ', error.errno, path)
 
     # The following decorator should be present on all verb methods (head, get, post, 
     # patch, put, delete, options) to ensure only authorized user can request the 
