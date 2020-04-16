@@ -95,8 +95,8 @@ export class SettingsWidget extends ReactWidget {
     this.addClass('jp-ReactWidget');
     this.settings = settings;
   }
-  settingsComponent = (<SettingsComponent settings={this.settings} />);
+
   render(): JSX.Element {
-    return this.settingsComponent;
+    return <SettingsComponent settings={this.settings} />;
   }
 }

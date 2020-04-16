@@ -65,6 +65,21 @@ const extension: JupyterFrontEndPlugin<void> = {
       const outdir = settings.get('outdir').composite as string;
 
       console.log(`Settings are  set to '${email}' and flag to '${outdir}'`);
+      requestAPI<any>('savesettings', {
+        body: JSON.stringify({
+          path: emblToolsPath,
+          email: email,
+          outdir: outdir
+        }),
+        method: 'POST'
+      }).then((result: any) => {
+        if (result.result === false) {
+          window.alert(
+            'Failed to save EMBL-Tools settings to file. Reason: ' +
+              result.reason
+          );
+        }
+      });
     }
 
     // Wait for the application to be restored and
