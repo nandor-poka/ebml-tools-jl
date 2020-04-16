@@ -21,14 +21,14 @@ const SettingsComponent = (props: any): JSX.Element => {
       </h3>
       <h2>Change Settings</h2>
       <p>
-        Set default email: <input type="text" id="email" name="email"></input>
+        Set default email: <input type="text" id="email" name="email" />
       </p>
       <p>
         Set default output directory:
-        <input type="text" id="outdir" name="outdir"></input>
+        <input type="text" id="outdir" name="outdir" />
       </p>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <button
         onClick={async (): Promise<void> => {
           if (
@@ -73,8 +73,8 @@ const SettingsComponent = (props: any): JSX.Element => {
       >
         Save settings
       </button>
-      <br></br>
-      <h2 id="warningText" style={{ color: 'red' }}></h2>
+      <br />
+      <h2 id="warningText" style={{ color: 'red' }} />
     </div>
   );
 };
@@ -92,8 +92,8 @@ export class SettingsWidget extends ReactWidget {
     this.addClass('jp-ReactWidget');
     this.settings = settings;
   }
-
+  settingsComponent = <SettingsComponent settings={this.settings} />;
   render(): JSX.Element {
-    return <SettingsComponent settings={this.settings} />;
+    return this.settingsComponent;
   }
 }
