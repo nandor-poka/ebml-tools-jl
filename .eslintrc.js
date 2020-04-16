@@ -3,6 +3,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:jsdoc/recommended',
     'plugin:prettier/recommended',
     'plugin:react/recommended'
   ],
@@ -11,7 +12,7 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module'
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jsdoc'],
   rules: {
     '@typescript-eslint/interface-name-prefix': [
       'error',
@@ -28,6 +29,18 @@ module.exports = {
     ],
     curly: ['error', 'all'],
     eqeqeq: 'error',
+    'jsdoc/require-param-type': 'off',
+    'jsdoc/require-property-type': 'off',
+    'jsdoc/require-returns-type': 'off',
+    'jsdoc/no-types': 'warn',
     'prefer-arrow-callback': 'error'
+  },
+  settings: {
+    jsdoc: {
+      mode: 'typescript'
+    },
+    react: {
+      version: 'detect'
+    }
   }
 };

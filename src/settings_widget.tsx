@@ -6,6 +6,7 @@ import React from 'react';
  * React component for settings.
  *
  * @returns The React component
+ * @param props Properties object that is typecasted to ISettingRegistry.ISettings
  */
 const SettingsComponent = (props: any): JSX.Element => {
   const settings: ISettingRegistry.ISettings = props.settings;
@@ -85,7 +86,9 @@ const SettingsComponent = (props: any): JSX.Element => {
 export class SettingsWidget extends ReactWidget {
   settings: ISettingRegistry.ISettings;
   /**
-   * Constructs a new CounterWidget.
+   * Constructs a new SettingsWidget.
+   *
+   * @param settings ISettingRegistry.ISettings object coming from the main extension when widget is created.
    */
   constructor(settings: ISettingRegistry.ISettings) {
     super();
