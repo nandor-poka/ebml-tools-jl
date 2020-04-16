@@ -12,20 +12,20 @@ const SettingsComponent = (props: any): JSX.Element => {
   return (
     <div>
       <h1>EMBL-Tools Settngs</h1>
-      <h3 id='currentEmail'>
+      <h3 id="currentEmail">
         Current email is: {settings.get('email').composite as string}
       </h3>
-      <h3 id='currentOutdir'>
+      <h3 id="currentOutdir">
         Current output directtory is:{' '}
         {settings.get('outdir').composite as string}
       </h3>
       <h2>Change Settings</h2>
       <p>
-        Set default email: <input type='text' id='email' name='email'></input>
+        Set default email: <input type="text" id="email" name="email"></input>
       </p>
       <p>
         Set default output directory:
-        <input type='text' id='outdir' name='outdir'></input>
+        <input type="text" id="outdir" name="outdir"></input>
       </p>
       <br></br>
       <br></br>
@@ -74,7 +74,7 @@ const SettingsComponent = (props: any): JSX.Element => {
         Save settings
       </button>
       <br></br>
-      <h2 id='warningText' style={{ color: 'red' }}></h2>
+      <h2 id="warningText" style={{ color: 'red' }}></h2>
     </div>
   );
 };
