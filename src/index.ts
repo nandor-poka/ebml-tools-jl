@@ -10,8 +10,10 @@ import { PathExt } from '@jupyterlab/coreutils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { IMainMenu } from '@jupyterlab/mainmenu';
 import { Menu } from '@lumino/widgets';
+import { MainAreaWidget } from '@jupyterlab/apputils';
 
 import embLogo from '../style/EMBL_logo.svg';
+import { SettingsWidget } from './settings_widget';
 
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools';
@@ -20,7 +22,6 @@ const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
 const toolNameMapping = new Map<string, string>();
 toolNameMapping.set('clustalo.ipynb', 'ClustalO');
 toolNameMapping.set('ncbiBlast.ipynb', 'NCBI BLAST');
-
 
 /**
  * Initialization data for the embl-tools-jl extension.
@@ -32,7 +33,7 @@ const extension: JupyterFrontEndPlugin<void> = {
   activate: async (
     app: JupyterFrontEnd,
     launcher: ILauncher,
-    settings: ISettingRegistry,
+    settingsRegistry: ISettingRegistry,
     mainMenu: IMainMenu
   ) => {
     const { commands } = app;
@@ -53,39 +54,38 @@ const extension: JupyterFrontEndPlugin<void> = {
     toolsSubMenu.title.label = 'Tools';
     toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenu });
 
-    const settingsSubMenu = new Menu({ commands });
-    settingsSubMenu.title.label = 'Settings';
-    toolsMainMenu.addItem({ type: 'submenu', submenu: settingsSubMenu });
     /**
      * Load the settings for this extension
      *
-     * @param setting Extension settings
+     * @param settings Extension settings
      */
-    function loadSetting(setting: ISettingRegistry.ISettings): void {
+    function loadSetting(settings: ISettingRegistry.ISettings): void {
       // Read the settings and convert to the correct type
-      const email = setting.get('email').composite as string;
-      const outdir = setting.get('outdir').composite as string;
+      const email = settings.get('email').composite as string;
+      const outdir = settings.get('outdir').composite as string;
 
       console.log(`Settings are  set to '${email}' and flag to '${outdir}'`);
-      commands.addCommand(commandPrefix+'emailSettings',{
-        label:'Set default email',
-        execute:() =>{
-          window.alert('email settings.')
-        }
-      });
-      settingsSubMenu.addItem({command:commandPrefix+'emailSettings'});
     }
 
     // Wait for the application to be restored and
     // for the settings for this plugin to be loaded
-    Promise.all([app.restored, settings.load(PLUGIN_ID)])
-      .then(([, setting]) => {
+    Promise.all([app.restored, settingsRegistry.load(PLUGIN_ID)])
+      .then(([, settings]) => {
         // Read the settings
-        loadSetting(setting);
+        loadSetting(settings);
 
         // Listen for your plugin setting changes using Signal
-        setting.changed.connect(loadSetting);
-
+        settings.changed.connect(loadSetting);
+        commands.addCommand(commandPrefix + 'emailSettings', {
+          label: 'Open settings',
+          execute: () => {
+            const content = new SettingsWidget(settings);
+            const widget = new MainAreaWidget<SettingsWidget>({ content });
+            widget.title.label = 'EMBL-Tools settings';
+            app.shell.add(widget, 'main');
+          }
+        });
+        toolsMainMenu.addItem({ command: commandPrefix + 'emailSettings' });
       })
       .catch(reason => {
         console.error(
@@ -104,7 +104,6 @@ const extension: JupyterFrontEndPlugin<void> = {
     }
 
     if (foundExtension) {
-      
       let tools: string[] = [];
       try {
         const data = await requestAPI<any>('toolcheck', {
