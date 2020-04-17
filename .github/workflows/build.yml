@@ -22,9 +22,10 @@ jobs:
         python-version: '3.7'
         architecture: 'x64'
     - name: Install dependencies
-      run: python -m pip install jupyterlab
-           sudo apt-get update
-           sudo apt-get install -y libgbm-dev
+      run: |
+        python -m pip install jupyterlab
+        sudo apt-get update
+        sudo apt-get install -y libgbm-dev
     - name: Build the extension
       run: |
         jlpm
