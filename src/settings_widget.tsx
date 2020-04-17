@@ -19,8 +19,8 @@ const SettingsComponent = (props: any): JSX.Element => {
       <h3 id="currentOutdir">
         Current output directtory is:{' '}
         {settings.get('outdir').composite as string}
-      </h3>s
-      <h2>Change Settings</h2>
+      </h3>
+      s<h2>Change Settings</h2>
       <p>
         Set default email: <input type="text" id="email" name="email" />
       </p>
@@ -42,11 +42,14 @@ const SettingsComponent = (props: any): JSX.Element => {
             return;
           }
           if (
-            !((document.getElementById('email') as HTMLInputElement).value.match('.*@.*\..*'))){
-              document.getElementById('warningText').innerHTML =
+            !(document.getElementById('email') as HTMLInputElement).value.match(
+              '.*@.*..*'
+            )
+          ) {
+            document.getElementById('warningText').innerHTML =
               'Email does not seem to be valid. Please use the following format: username@provider.tld: eg.: someone@example.com';
             return;
-            }
+          }
           await settings
             .set(
               'email',
@@ -57,20 +60,17 @@ const SettingsComponent = (props: any): JSX.Element => {
                 `Something went wrong when setting email.\n${reason}`
               );
             });
-          let outdirClean = (document.getElementById('outdir') as HTMLInputElement).value
-          if (outdirClean.endsWith('/')){
-            outdirClean = outdirClean.substr(0, outdirClean.length-1);
+          let outdirClean = (document.getElementById(
+            'outdir'
+          ) as HTMLInputElement).value;
+          if (outdirClean.endsWith('/')) {
+            outdirClean = outdirClean.substr(0, outdirClean.length - 1);
           }
-          await settings
-            .set(
-              'outdir',
-              outdirClean
-            )
-            .catch(reason => {
-              console.error(
-                `Something went wrong when setting outdir.\n${reason}`
-              );
-            });
+          await settings.set('outdir', outdirClean).catch(reason => {
+            console.error(
+              `Something went wrong when setting outdir.\n${reason}`
+            );
+          });
           document.getElementById(
             'currentEmail'
           ).innerHTML = ('Current email is: ' +
