@@ -19,7 +19,7 @@ const SettingsComponent = (props: any): JSX.Element => {
       <h3 id="currentOutdir">
         Current output directtory is:{' '}
         {settings.get('outdir').composite as string}
-      </h3>
+      </h3>s
       <h2>Change Settings</h2>
       <p>
         Set default email: <input type="text" id="email" name="email" />
@@ -41,6 +41,12 @@ const SettingsComponent = (props: any): JSX.Element => {
               'Email and output directory cannot be empty.';
             return;
           }
+          if (
+            !((document.getElementById('email') as HTMLInputElement).value.match('.*@.*\..*'))){
+              document.getElementById('warningText').innerHTML =
+              'Email does not seem to be valid. Please use the following format: username@provider.tld: eg.: someone@example.com';
+            return;
+            }
           await settings
             .set(
               'email',
@@ -51,10 +57,14 @@ const SettingsComponent = (props: any): JSX.Element => {
                 `Something went wrong when setting email.\n${reason}`
               );
             });
+          let outdirClean = (document.getElementById('outdir') as HTMLInputElement).value
+          if (outdirClean.endsWith('/')){
+            outdirClean = outdirClean.substr(0, outdirClean.length-1);
+          }
           await settings
             .set(
               'outdir',
-              (document.getElementById('outdir') as HTMLInputElement).value
+              outdirClean
             )
             .catch(reason => {
               console.error(

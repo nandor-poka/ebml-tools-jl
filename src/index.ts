@@ -63,7 +63,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       // Read the settings and convert to the correct type
       const email = settings.get('email').composite as string;
       const outdir = settings.get('outdir').composite as string;
-
+      
       console.log(`Settings are  set to '${email}' and flag to '${outdir}'`);
       requestAPI<any>('savesettings', {
         body: JSON.stringify({

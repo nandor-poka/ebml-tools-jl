@@ -1,6 +1,6 @@
 {
   "name": "embl-tools-jl",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "An extension adding Launcher shortcuts to JupyterLab for EMBL Tools",
   "keywords": [
     "jupyter",
