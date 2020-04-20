@@ -5,7 +5,6 @@
 
 An extension adding Launcher shortcuts to JupyterLab for EMBL Tools.
 
-
 This extension is composed of a Python package named `embl_tools_jl`
 for the server extension and a NPM package named `embl-tools-jl`
 for the frontend extension.
@@ -14,6 +13,8 @@ for the frontend extension.
 ## Requirements
 
 * JupyterLab >= 2.0
+* [EMBL-Tools](https://github.com/nandor-poka/embl_tools) installed and accessible from Jupyterlab root path (where JupyterLab has been started from. 
+The extension will not put icons to the Launcher if the EMBL-Tools is not found in the directory tree. **Scanning for the tools can take long and thus delay the startup of JupyterLab. It is recommended to put EMBL-Tools in the root of your regular work wdirectory you use JupyterLab in.**
 
 ## Install
 
