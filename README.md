@@ -9,6 +9,9 @@ This extension is composed of a Python package named `embl_tools_jl`
 for the server extension and a NPM package named `embl-tools-jl`
 for the frontend extension.
 
+## Preview
+
+![Preview](./img/preview.png)
 
 ## Requirements
 
