@@ -7,13 +7,13 @@
         "type": "string",
         "title": "Email address",
         "description": "Email address to be automatically filled in EMBL-Tools notebooks.",
-        "default": "someone@example.com"
+        "default": ""
       },
       "outdir": {
         "type": "string",
         "title": "Default save directory",
-        "description": "Absolute path of the directory where result should be saved automatically.",
-        "default": "results"
+        "description": "Path of the directory where result should be saved.",
+        "default": "./"
       }
     }
 }
