@@ -1,0 +1,30 @@
+{
+    "clustalo":{
+        "label":"ClustalO",
+        "caption":"Multiple sequence alignment with Clustal Omega."
+    },
+    "ncbiBlast":{
+        "label":"NCBI BLAST",
+        "caption":"Sequence similarity search with NCBI Blast."
+    },
+    "dbfetch":{
+        "label":"Dbfetch",
+        "caption":"Dbfetch service enables database entry retrieval given a set of entry identifiers, and a required data format."
+    },
+    "emboss_backtranseq":{
+        "label":"Backtranambig",
+        "caption":"Back-translate a protein sequence to ambiguous nucleotide sequence."
+    },
+    "backtranseq":{
+        "label":"Backtranseq",
+        "caption":"A program to back-translate a protein sequence to a nucleotide sequence."
+    },
+    "cpgplot":{
+        "label":"CpG-plot",
+        "caption":"Identify and plot CpG islands in nucleotide sequence(s)."
+    },
+    "dotmatcher":{
+        "label":"Dotmatcher",
+        "caption":"Draw a threshold dotplot of two sequences"
+    }
+}

@@ -94,8 +94,30 @@ class settingsHandler(APIHandler):
         except Exception as exception:
             self.finish(json.dumps({
                 'result': False,
-                'reason': str(type(exception)+' '+ exception)
+                'reason':  exception.__str__()
             }))
+
+class ToolDescriptionsHandler(APIHandler):
+
+    @tornado.web.authenticated
+    def get(self):
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        desc_file_path = os.path.join(__location__, 'toolDescriptions.json')
+        descriptions = '{}'
+        success = False
+        error_msg = ''
+        try:
+            with open(desc_file_path, 'r') as descriptions_file:
+                descriptions = descriptions_file.read()
+                descriptions_file.close
+                success = True
+        except Exception as exception:
+            error_msg  = exception.__str__()
+        self.finish(json.dumps({
+            'success': success,
+            'error_msg' : error_msg,
+            'descriptions': descriptions
+        }))    
 
 def setup_handlers(web_app):
     host_pattern = '.*$'
@@ -104,6 +126,7 @@ def setup_handlers(web_app):
     startup_pattern = url_path_join(base_url, extension_url, 'startup')
     toolcheck_pattern = url_path_join(base_url, extension_url, 'toolcheck')
     saveSettings_pattern = url_path_join(base_url, extension_url, 'savesettings' )
+    getDescriptions_pattern = url_path_join(base_url, extension_url, 'getDescriptions')
     handlers = [(startup_pattern, Startup_handler), (toolcheck_pattern,ToolsChecker_handler ),
-                (saveSettings_pattern, settingsHandler)]
+                (saveSettings_pattern, settingsHandler), (getDescriptions_pattern, ToolDescriptionsHandler)]
     web_app.add_handlers(host_pattern, handlers)

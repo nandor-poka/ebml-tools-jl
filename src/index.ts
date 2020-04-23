@@ -15,13 +15,10 @@ import { MainAreaWidget } from '@jupyterlab/apputils';
 import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
 
+
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools';
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
-
-const toolNameMapping = new Map<string, string>();
-toolNameMapping.set('clustalo.ipynb', 'ClustalO');
-toolNameMapping.set('ncbiBlast.ipynb', 'NCBI BLAST');
 
 /**
  * Initialization data for the embl-tools-jl extension.
@@ -45,10 +42,12 @@ const extension: JupyterFrontEndPlugin<void> = {
     let foundExtension = false;
     let emblToolsPath = '';
     console.log('JupyterLab extension embl-tools-jl is activated!');
+
     // Create a menu in the main menu bar
     const toolsMainMenu = new Menu({ commands });
     toolsMainMenu.title.label = 'EMBL-Tools';
     mainMenu.addMenu(toolsMainMenu, { rank: 80 });
+
     // Create submenu for the tool's own menu for tools.
     const toolsSubMenu = new Menu({ commands });
     toolsSubMenu.title.label = 'Tools';
@@ -129,20 +128,37 @@ const extension: JupyterFrontEndPlugin<void> = {
       } catch (reason) {
         console.error(`Error on GET embl-tools-jl/toolcheck.\n${reason}`);
       }
+      let ToolDescriptions;
+
+      try {
+        const data = await requestAPI<any>('getDescriptions');
+        if(data.success){
+          ToolDescriptions = JSON.parse(data.descriptions);
+        }else {
+          console.log(data.error_msg);
+        }
+      } catch (reason) {
+        console.error(`Error on GET embl-tools-jl/getDescriptions.\n${reason}`);
+      }
 
       for (const index in tools) {
         let rank = 1;
+        let toolname = tools[index].split('ipynb')[0].replace('.','')
         commands.addCommand(
           commandPrefix + tools[index].toLowerCase().split('.')[0],
           {
             label:
-              toolNameMapping.get(tools[index]) === undefined
-                ? tools[index].toLowerCase().split('.')[0]
-                : toolNameMapping.get(tools[index]),
+            ToolDescriptions === undefined 
+              ? toolname
+              : ToolDescriptions[toolname] === undefined
+                ? toolname
+                : ToolDescriptions[toolname].label,
             caption:
-              toolNameMapping.get(tools[index]) === undefined
-                ? tools[index].toLowerCase().split('.')[0] + ' webservice'
-                : toolNameMapping.get(tools[index]) + ' webservice',
+            ToolDescriptions === undefined 
+              ? toolname + ' webservice'
+              : ToolDescriptions[toolname] === undefined
+                ? toolname + ' webservice' 
+                : ToolDescriptions[toolname].caption,
             icon: icon,
             execute: async => {
               return commands.execute('docmanager:open', {
