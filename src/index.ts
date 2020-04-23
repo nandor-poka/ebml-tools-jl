@@ -15,7 +15,6 @@ import { MainAreaWidget } from '@jupyterlab/apputils';
 import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
 
-
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools';
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
@@ -132,9 +131,9 @@ const extension: JupyterFrontEndPlugin<void> = {
 
       try {
         const data = await requestAPI<any>('getDescriptions');
-        if(data.success){
+        if (data.success) {
           ToolDescriptions = JSON.parse(data.descriptions);
-        }else {
+        } else {
           console.log(data.error_msg);
         }
       } catch (reason) {
@@ -143,21 +142,21 @@ const extension: JupyterFrontEndPlugin<void> = {
 
       for (const index in tools) {
         let rank = 1;
-        let toolname = tools[index].split('ipynb')[0].replace('.','')
+        const toolname = tools[index].split('ipynb')[0].replace('.', '');
         commands.addCommand(
           commandPrefix + tools[index].toLowerCase().split('.')[0],
           {
             label:
-            ToolDescriptions === undefined 
-              ? toolname
-              : ToolDescriptions[toolname] === undefined
+              ToolDescriptions === undefined
+                ? toolname
+                : ToolDescriptions[toolname] === undefined
                 ? toolname
                 : ToolDescriptions[toolname].label,
             caption:
-            ToolDescriptions === undefined 
-              ? toolname + ' webservice'
-              : ToolDescriptions[toolname] === undefined
-                ? toolname + ' webservice' 
+              ToolDescriptions === undefined
+                ? toolname + ' webservice'
+                : ToolDescriptions[toolname] === undefined
+                ? toolname + ' webservice'
                 : ToolDescriptions[toolname].caption,
             icon: icon,
             execute: async => {
