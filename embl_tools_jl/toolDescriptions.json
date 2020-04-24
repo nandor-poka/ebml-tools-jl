@@ -11,20 +11,188 @@
         "label":"Dbfetch",
         "caption":"Dbfetch service enables database entry retrieval given a set of entry identifiers, and a required data format."
     },
-    "emboss_backtranseq":{
-        "label":"Backtranambig",
+    "emboss_backtranambig":{
+        "label":"EMBOSS Backtranambig",
         "caption":"Back-translate a protein sequence to ambiguous nucleotide sequence."
     },
-    "backtranseq":{
-        "label":"Backtranseq",
+    "emboss_backtranseq":{
+        "label":"EMBOSS Backtranseq",
         "caption":"A program to back-translate a protein sequence to a nucleotide sequence."
     },
-    "cpgplot":{
-        "label":"CpG-plot",
+    "emboss_cpgplot":{
+        "label":"EMBOSS CpG-plot",
         "caption":"Identify and plot CpG islands in nucleotide sequence(s)."
     },
-    "dotmatcher":{
-        "label":"Dotmatcher",
+    "emboss_dotmatcher":{
+        "label":"EMBOSS Dotmatcher",
         "caption":"Draw a threshold dotplot of two sequences"
+    },
+    "kalign":{
+        "label":"Kalign",
+        "caption":"A fast and accurate multiple sequence alignment algorithm."
+    },
+    "mafft":{
+        "label":"MAFFT",
+        "caption":"MAFFT (Multiple Alignment using Fast Fourier Transform) is a high speed multiple sequence alignment program."
+    },
+    "muscle":{
+        "label":"MUSCLE",
+        "caption":"MUSCLE stands for MUltiple Sequence Comparison by Log-Expectation. MUSCLE is claimed to achieve both better average accuracy and better speed than ClustalW2 or T-Coffee, depending on the chosen options."
+    },
+    "mview":{
+        "label":"MView",
+        "caption":"MView reformats the results of a sequence database search (BLAST, FASTA, etc) or a multiple alignment (MSF, PIR, CLUSTAL, etc) adding optional HTML mark-up to control colouring and web page layout.\nMView is not a multiple alignment program, nor is it a general purpose alignment editor. "
+    },
+    "prank":{
+        "label":"PRANK",
+        "caption":"PRANK is a probabilistic multiple alignment program for DNA, codon and amino-acid sequences. It's based on a novel algorithm that treats insertions correctly and avoids over-estimation of the number of deletion events. In addition, PRANK borrows ideas from maximum likelihood methods used in phylogenetics and correctly takes into account the evolutionary distances between sequences. Lastly, PRANK allows for defining a potential structure for sequences to be aligned and then, simultaneously with the alignment, predicts the locations of structural units in the sequences."
+    },
+    "tcoffee":{
+        "label":"T-Coffee",
+        "caption":"T-Coffee is a multiple sequence alignment program. The main characteristic of T-Coffee is that it will allow you to combine results obtained with several alignment methods. By default, T-Coffee will compare all your sequences two by two, producing a global alignment and a series of local alignments (using lalign). The program will then combine all these alignments into a multiple alignment."
+    },
+    "emboss_matcher":{
+        "label":"EMBOSS Matcher",
+        "caption":"EMBOSS Matcher identifies local similarities in two input sequences using a rigorous algorithm based on Bill Pearson's lalign application, version 2.0u4 (Feb. 1996)"
+    },
+    "emboss_needle":{
+        "label":"EMBOSS Needle",
+        "caption":"EMBOSS Needle reads two input sequences and writes their optimal global sequence alignment to file. It uses the Needleman-Wunsch alignment algorithm to find the optimum alignment (including gaps) of two sequences along their entire length."
+    },
+    "emboss_stretcher":{
+        "label":"EMBOSS Stretcher",
+        "caption":"EMBOSS Stretcher calculates an optimal global alignment of two sequences using a modification of the classic dynamic programming algorithm which uses linear space."
+    },
+    "emboss_water":{
+        "label":"EMBOSS Water",
+        "caption":"EMBOSS Water uses the Smith-Waterman algorithm (modified for speed enhancments) to calculate the local alignment of a sequence to one or more other sequences."
+    },
+    "genewise":{
+        "label":"GeneWise",
+        "caption":"The Wise2 form compares a protein sequence to a genomic DNA sequence, allowing for introns and frameshifting errors."
+    },
+    "lalign":{
+        "label":"LALIGN",
+        "caption":"LALIGN finds internal duplications by calculating non-intersecting local alignments of protein or DNA sequences"
+    },
+    "simple_phylogeny":{
+        "label":"Simple Phylogeny",
+        "caption":"Commonly used phylogenetic tree generation methods provided by the ClustalW2 program."
+    },
+    "iprscan5":{
+        "label":"InterProScan 5",
+        "caption":"InterProScan is a tool that combines different protein signature recognition methods into one resource. The number of signature databases and their associated scanning tools, as well as the further refinement procedures, increases the complexity of the problem."
+    },
+    "pfamscan":{
+        "label":"PfamScan",
+        "caption":"PfamScan is used to search a FASTA sequence against a library of Pfam HMM"
+    },
+    "phobius":{
+        "label":"Phobius",
+        "caption":"Phobius: prediction of transmembrane topology and signal peptides from the amino acid sequence of a protein."
+    },
+    "pratt":{
+        "label":"Pratt",
+        "caption":"Pratt - Pattern Matching. An important problem in sequence analysis is to find patterns matching sets or subsets of sequences. This tool allows the user to search for patterns conserved in sets of unaligned protein sequences. The user can specify what kind of patterns should be searched for, and how many sequences should match a pattern to be reported."
+    },
+    "radar":{
+        "label":"RADAR",
+        "caption":"RADAR stands for Rapid Automatic Detection and Alignment of Repeats in protein sequences. RADAR identifies gapped approximate repeats and complex repeat architectures involving many different types of repeats."
+    },
+    "hmmer3_hmmscan":{
+        "label":"Hmmer3 hmmscan",
+        "caption":"Hmmer3 hmmscan is used to search sequences against collections of profiles."
+    },
+    "hmmer3_phmmer":{
+        "label":"Hmmer3 phmmer",
+        "caption":"Hmmer3 phmmer is used to search one or more query sequences against a sequence database."
+    },
+    "infernal_cmscan":{
+        "label":"Infernal cmscan",
+        "caption":"Infernal cmscan is used to search the CM-format Rfam database"
+    },
+    "mapmi":{
+        "label":"MapMi",
+        "caption":"MapMi, a tool for mapping and analysis of miRNA sequences. It is designed to locate miRNA precursor sequences in existing genomic sequences (e.g Ensembl and Ensembl Metazoa), using potential mature miRNA sequences as input. After searching the genome for the provided mature sequences, these hits are extended and classified taking into account major structural properties of known miRNA precursors."
+    },
+    "emboss_seqret":{
+        "label":"EMBOSS seqret",
+        "caption":"EMBOSS seqret reads and writes (returns) sequences. It is useful for a variety of tasks, including extracting sequences from databases, displaying sequences, reformatting sequences, producing the reverse complement of a sequence, extracting fragments of a sequence, sequence case conversion or any combination of the above functions."
+    },
+    "seqcksum":{
+        "label":"Sequence checksum calculator",
+        "caption":"A program to generate checksums for sequences. The checksums can be CRC32, CRC64-ISO, CRC64-ECMA-182,CRC32-CRC64, MD5, SHA1, SHA2 224-bit, SHA2 256-bit, SHA2 384-bit and SHA2 512-bit."
+    },
+    "fasta":{
+        "label":"FASTA",
+        "caption":"FASTA (pronounced FAST-AYE) is a suite of programs for searching nucleotide or protein databases with a query sequence. FASTA itself performs a local heuristic search of a protein or nucleotide database for a query of the same type. FASTX and FASTY translate a nucleotide query for searching a protein database. TFASTX and TFASTY translate a nucleotide database to be searched with a protein query. Optimal searches are available with the programs SSEARCH (local), GGSEARCH (global) and GLSEARCH (global query against local database)."
+    },
+    "fastm":{
+        "label":"FASTM",
+        "caption":"FASTM: compare peptides to a protein sequence database."
+    },
+    "psiblast":{
+        "label":"PSI-BLAST",
+        "caption":"BLAST stands for Basic Local Alignment Search Tool.The emphasis of this tool is to find regions of sequence similarity, which will yield functional and evolutionary clues about the structure and function of your novel sequence. Position specific iterative BLAST (PSI-BLAST) refers to a feature of BLAST 2.0 in which a profile is automatically constructed from the first set of BLAST alignments. PSI-BLAST is similar to NCBI BLAST2 except that it uses position-specific scoring matrices derived during the search, this tool is used to detect distant evolutionary relationships. PHI-BLAST functionality is available to use patterns to restrict search results."
+    },
+    "psisearch":{
+        "label":"PSI-Search",
+        "caption":"PSI-Search, similar to PSI-BLAST, combines the Smith-Waterman search algorithm with the PSI-BLAST profile construction strategy to find distantly related protein sequences. Searches are done with SSEARCH, and the selected hits are combined with BLASTPGP to build a position specific scoring matrix (PSSM), which is then used for another search with SSEARCH in the next iteration. "
+    },
+    "psisearch2":{
+        "label":"PSI-Search 2",
+        "caption":""
+    },
+    "emboss_isochore":{
+        "label":"EMBOSS Isochore",
+        "caption":"Plot isochores in DNA sequences"
+    },
+    "emboss_newcpgreport":{
+        "label":"EMBOSS New CpG report",
+        "caption":"Identify CpG islands in nucleotide sequence(s)"
+    },
+    "emboss_pepinfo":{
+        "label":"EMBOSS Pepinfo",
+        "caption":"Plot amino acid properties of a protein sequence"
+    },
+    "emboss_pepstats":{
+        "label":"EMBOSS Pepstats",
+        "caption":"Calculates statistics of protein properties."
+    },
+    "emboss_pepwindow":{
+        "label":"EMBOSS Pepwindow",
+        "caption":"Plot amino acid properties of a protein sequence"
+    },
+    "emboss_dotpath":{
+        "label":"EMBOSS Dotpath",
+        "caption":"Draw a non-overlapping wordmatch dotplot of two sequences"
+    },
+    "emboss_dottup":{
+        "label":"EMBOSS Dottup",
+        "caption":"Draw a non-overlapping wordmatch dotplot of two sequences"
+    },
+    "emboss_polydot":{
+        "label":"EMBOSS Polydot",
+        "caption":"Draw dotplots for all-against-all comparison of a sequence set"
+    },
+    "saps":{
+        "label":"SAPS",
+        "caption":"Statistical Analysis of Protein Sequences."
+    },
+    "emboss_sixpack":{
+        "label":"EMBOSS Sixpack",
+        "caption":"Sixpack reads a DNA sequence and outputs the three forward and (optionally) three reverse translations in a visual manner."
+    },
+    "emboss_transeq":{
+        "label":"EMBOSS Transeq",
+        "caption":"A program to translate nucleic acid sequences to their corresponding peptide sequences. It can translate to the three forward and three reverse frames, and output multiple frame translations at once."
+    },
+    "promoterwise":{
+        "label":"PromoterWise",
+        "caption":""
+    },
+    "wise2dba":{
+        "label":"Wise2DBA",
+        "caption":""
     }
 }
