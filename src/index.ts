@@ -18,6 +18,17 @@ import { SettingsWidget } from './settings_widget';
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools';
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
+const TOOL_CATEGORY_MSA = 'Multiple Sequence Alignment (MSA)';
+const TOOL_CATEGORY_PSA = 'Pairwise Sequence Alignment (PSA)';
+const TOOL_CATEGORY_PHY = 'Phylogeny';
+const TOOL_CATEGORY_PFA = 'Protein Functional Analysis (PFA)';
+const TOOL_CATEGORY_RNA = 'RNA Analysis';
+const TOOL_CATEGORY_SFC = 'Sequence Format Conversion (SFC)';
+const TOOL_CATEGORY_SO = 'Sequence Operations (SO)';
+const TOOL_CATEGORY_ST = 'Sequence Translation (ST)';
+const TOOL_CATEGORY_SSS = 'Sequence Similarity Search (SSS)';
+const TOOL_CATEGORY_STA = 'Sequence Statistics (seqstats)';
+const TOOL_CATEGORY_OTH = 'Other';
 
 /**
  * Initialization data for the embl-tools-jl extension.
@@ -47,10 +58,41 @@ const extension: JupyterFrontEndPlugin<void> = {
     toolsMainMenu.title.label = 'EMBL-Tools';
     mainMenu.addMenu(toolsMainMenu, { rank: 80 });
 
-    // Create submenu for the tool's own menu for tools.
-    const toolsSubMenu = new Menu({ commands });
-    toolsSubMenu.title.label = 'Tools';
-    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenu });
+    // Create submenus for the tool's own menu for tools.
+    const toolsSubMenuMSA = new Menu({ commands });
+    const toolsSubMenuPSA = new Menu({ commands });
+    const toolsSubMenuPHY = new Menu({ commands });
+    const toolsSubMenuPFA = new Menu({ commands });
+    const toolsSubMenuRNA = new Menu({ commands });
+    const toolsSubMenuSFC = new Menu({ commands });
+    const toolsSubMenuSO = new Menu({ commands });
+    const toolsSubMenuST = new Menu({ commands });
+    const toolsSubMenuSSS = new Menu({ commands });
+    const toolsSubMenuSTA = new Menu({ commands });
+    const toolsSubMenuOTH = new Menu({ commands });
+    toolsSubMenuMSA.title.label = TOOL_CATEGORY_MSA;
+    toolsSubMenuPSA.title.label = TOOL_CATEGORY_PSA;
+    toolsSubMenuPHY.title.label = TOOL_CATEGORY_PHY;
+    toolsSubMenuPFA.title.label = TOOL_CATEGORY_PFA;
+    toolsSubMenuRNA.title.label = TOOL_CATEGORY_RNA;
+    toolsSubMenuSFC.title.label = TOOL_CATEGORY_SFC;
+    toolsSubMenuSO.title.label = TOOL_CATEGORY_SO;
+    toolsSubMenuST.title.label = TOOL_CATEGORY_ST;
+    toolsSubMenuSSS.title.label = TOOL_CATEGORY_SSS;
+    toolsSubMenuSTA.title.label = TOOL_CATEGORY_STA;
+    toolsSubMenuOTH.title.label = TOOL_CATEGORY_OTH;
+
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuMSA });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuPSA });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuPHY });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuPFA });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuRNA });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuSFC });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuSO });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuST });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuSSS });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuSTA });
+    toolsMainMenu.addItem({ type: 'submenu', submenu: toolsSubMenuOTH });
 
     /**
      * Load the settings for this extension
@@ -140,9 +182,56 @@ const extension: JupyterFrontEndPlugin<void> = {
         console.error(`Error on GET embl-tools-jl/getDescriptions.\n${reason}`);
       }
 
+      let categoryMenu: Menu;
       for (const index in tools) {
-        let rank = 1;
+        const rank = 1;
         const toolname = tools[index].split('ipynb')[0].replace('.', '');
+        if (
+          ToolDescriptions !== undefined &&
+          ToolDescriptions[toolname] !== undefined
+        ) {
+          switch (ToolDescriptions[toolname].category) {
+            case TOOL_CATEGORY_MSA:
+              categoryMenu = toolsSubMenuMSA;
+              break;
+            case TOOL_CATEGORY_OTH:
+              categoryMenu = toolsSubMenuOTH;
+              break;
+            case TOOL_CATEGORY_PFA:
+              categoryMenu = toolsSubMenuPFA;
+              break;
+            case TOOL_CATEGORY_PHY:
+              categoryMenu = toolsSubMenuPHY;
+              break;
+            case TOOL_CATEGORY_PSA:
+              categoryMenu = toolsSubMenuPSA;
+              break;
+            case TOOL_CATEGORY_RNA:
+              categoryMenu = toolsSubMenuRNA;
+              break;
+            case TOOL_CATEGORY_SFC:
+              categoryMenu = toolsSubMenuSFC;
+              break;
+            case TOOL_CATEGORY_SO:
+              categoryMenu = toolsSubMenuSO;
+              break;
+            case TOOL_CATEGORY_SSS:
+              categoryMenu = toolsSubMenuSSS;
+              break;
+            case TOOL_CATEGORY_ST:
+              categoryMenu = toolsSubMenuST;
+              break;
+            case TOOL_CATEGORY_STA:
+              categoryMenu = toolsSubMenuSTA;
+              break;
+            default:
+              categoryMenu = toolsSubMenuOTH;
+              break;
+          }
+        } else {
+          categoryMenu = toolsSubMenuOTH;
+        }
+
         commands.addCommand(
           commandPrefix + tools[index].toLowerCase().split('.')[0],
           {
@@ -174,11 +263,9 @@ const extension: JupyterFrontEndPlugin<void> = {
           category: CATEGORY,
           rank: rank
         });
-        toolsSubMenu.addItem({
+        categoryMenu.addItem({
           command: commandPrefix + tools[index].toLowerCase().split('.')[0]
         });
-
-        ++rank;
       }
     }
   }
