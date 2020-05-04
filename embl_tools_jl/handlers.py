@@ -6,6 +6,7 @@ import tornado
 import os
 import logging
 
+# /startup endpoint
 class Startup_handler(APIHandler):
     logging.basicConfig(filename='./debug.log',filemode='w', format='%(levelname)s:%(message)s', level=logging.DEBUG)
     @property
@@ -44,6 +45,7 @@ class Startup_handler(APIHandler):
             'found': not(embl_path==None)
         }))
 
+# /toolcheck endpoint
 class ToolsChecker_handler(APIHandler):
     
     @property
@@ -66,12 +68,13 @@ class ToolsChecker_handler(APIHandler):
     @tornado.web.authenticated
     def post(self):
         data = self.get_json_body()
-        emblTools_path = data['path']
+        emblTools_path = data['path']+'/notebooks'
         tools = self.scan_disk(os.path.join(self.root_dir,emblTools_path))
         self.finish(json.dumps({
             'tools':tools
         }))
 
+# / settings endpoint
 class settingsHandler(APIHandler):
     @tornado.web.authenticated
     def post(self):
@@ -97,6 +100,7 @@ class settingsHandler(APIHandler):
                 'reason':  exception.__str__()
             }))
 
+# /descriptions endpoint
 class ToolDescriptionsHandler(APIHandler):
 
     @tornado.web.authenticated
@@ -125,8 +129,8 @@ def setup_handlers(web_app):
     base_url = web_app.settings['base_url']
     startup_pattern = url_path_join(base_url, extension_url, 'startup')
     toolcheck_pattern = url_path_join(base_url, extension_url, 'toolcheck')
-    saveSettings_pattern = url_path_join(base_url, extension_url, 'savesettings' )
-    getDescriptions_pattern = url_path_join(base_url, extension_url, 'getDescriptions')
+    saveSettings_pattern = url_path_join(base_url, extension_url, 'settings' )
+    getDescriptions_pattern = url_path_join(base_url, extension_url, 'descriptions')
     handlers = [(startup_pattern, Startup_handler), (toolcheck_pattern,ToolsChecker_handler ),
                 (saveSettings_pattern, settingsHandler), (getDescriptions_pattern, ToolDescriptionsHandler)]
     web_app.add_handlers(host_pattern, handlers)

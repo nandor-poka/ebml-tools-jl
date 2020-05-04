@@ -3,6 +3,9 @@
 
 ![Github Actions Status](https://github.com/nandor-poka/ebml-tools-jl/workflows/Build/badge.svg)
 
+### Copyright (c) 2020, Dr. Nandor Poka
+### Distributed under the terms of the 3-clause BSD License.
+
 An extension adding Launcher shortcuts to JupyterLab for EMBL Tools.
 
 This extension is composed of a Python package named `embl_tools_jl`

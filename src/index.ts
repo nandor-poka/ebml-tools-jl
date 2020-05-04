@@ -105,7 +105,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       const outdir = settings.get('outdir').composite as string;
 
       console.log(`Settings are  set to '${email}' and flag to '${outdir}'`);
-      requestAPI<any>('savesettings', {
+      requestAPI<any>('settings', {
         body: JSON.stringify({
           path: emblToolsPath,
           email: email,
@@ -172,14 +172,14 @@ const extension: JupyterFrontEndPlugin<void> = {
       let ToolDescriptions;
 
       try {
-        const data = await requestAPI<any>('getDescriptions');
+        const data = await requestAPI<any>('descriptions');
         if (data.success) {
           ToolDescriptions = JSON.parse(data.descriptions);
         } else {
           console.log(data.error_msg);
         }
       } catch (reason) {
-        console.error(`Error on GET embl-tools-jl/getDescriptions.\n${reason}`);
+        console.error(`Error on GET embl-tools-jl/descriptions.\n${reason}`);
       }
 
       let categoryMenu: Menu;

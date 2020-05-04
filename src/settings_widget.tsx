@@ -20,7 +20,7 @@ const SettingsComponent = (props: any): JSX.Element => {
         Current output directtory is:{' '}
         {settings.get('outdir').composite as string}
       </h3>
-      s<h2>Change Settings</h2>
+      <h2>Change Settings</h2>
       <p>
         Set default email: <input type="text" id="email" name="email" />
       </p>
@@ -91,7 +91,7 @@ const SettingsComponent = (props: any): JSX.Element => {
 };
 
 /**
- * A Counter Lumino Widget that wraps a SettingsComponent.
+ * The Lumio widget that wraps the settings ui React widget.
  */
 export class SettingsWidget extends ReactWidget {
   settings: ISettingRegistry.ISettings;
