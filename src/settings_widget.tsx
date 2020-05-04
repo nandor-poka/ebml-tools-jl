@@ -1,7 +1,11 @@
 import { ReactWidget } from '@jupyterlab/apputils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import React from 'react';
+import CSS from 'csstype';
 
+const margin: CSS.Properties = {
+  margin: '1em'
+};
 /**
  * React component for settings.
  *
@@ -12,25 +16,26 @@ const SettingsComponent = (props: any): JSX.Element => {
   const settings: ISettingRegistry.ISettings = props.settings;
   return (
     <div>
-      <h1>EMBL-Tools Settngs</h1>
-      <h3 id="currentEmail">
+      <h1 style={margin}>EMBL-Tools Settngs</h1>
+      <h3 style={margin} id="currentEmail">
         Current email is: {settings.get('email').composite as string}
       </h3>
-      <h3 id="currentOutdir">
+      <h3 style={margin} id="currentOutdir">
         Current output directtory is:{' '}
         {settings.get('outdir').composite as string}
       </h3>
-      <h2>Change Settings</h2>
-      <p>
+      <h2 style={margin}>Change Settings</h2>
+      <p style={margin}>
         Set default email: <input type="text" id="email" name="email" />
       </p>
-      <p>
+      <p style={margin}>
         Set default output directory:
         <input type="text" id="outdir" name="outdir" />
       </p>
       <br />
       <br />
       <button
+        style={margin}
         onClick={async (): Promise<void> => {
           if (
             (document.getElementById('email') as HTMLInputElement).value ===
