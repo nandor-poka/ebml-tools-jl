@@ -250,7 +250,7 @@ const extension: JupyterFrontEndPlugin<void> = {
             icon: icon,
             execute: async => {
               return commands.execute('docmanager:open', {
-                path: emblToolsPath + '/' + tools[index],
+                path: emblToolsPath + '/notebooks/' + tools[index],
                 factory: FACTORY
               });
             }
