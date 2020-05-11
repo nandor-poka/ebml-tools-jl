@@ -10,7 +10,7 @@ import { PathExt } from '@jupyterlab/coreutils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { IMainMenu } from '@jupyterlab/mainmenu';
 import { Menu } from '@lumino/widgets';
-import { MainAreaWidget } from '@jupyterlab/apputils';
+import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 
 import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
@@ -36,12 +36,13 @@ const TOOL_CATEGORY_OTH = 'Other';
 const extension: JupyterFrontEndPlugin<void> = {
   id: PLUGIN_ID,
   autoStart: true,
-  requires: [ILauncher, ISettingRegistry, IMainMenu],
+  requires: [ILauncher, ISettingRegistry, IMainMenu, ICommandPalette],
   activate: async (
     app: JupyterFrontEnd,
     launcher: ILauncher,
     settingsRegistry: ISettingRegistry,
-    mainMenu: IMainMenu
+    mainMenu: IMainMenu,
+    commandPalette: ICommandPalette
   ) => {
     const { commands } = app;
     const commandPrefix = 'embl-tools-jl:';
@@ -263,9 +264,16 @@ const extension: JupyterFrontEndPlugin<void> = {
           category: CATEGORY,
           rank: rank
         });
+        // Add the current tool to the EMBL-Tools menu, in the appropriate category
         categoryMenu.addItem({
           command: commandPrefix + tools[index].toLowerCase().split('.')[0]
         });
+        // Add the current tool / command to the command plaette
+        commandPalette.addItem({
+          command: commandPrefix + tools[index].toLowerCase().split('.')[0],
+          category: CATEGORY
+        });
+        
       }
     }
   }
