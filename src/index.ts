@@ -273,7 +273,6 @@ const extension: JupyterFrontEndPlugin<void> = {
           command: commandPrefix + tools[index].toLowerCase().split('.')[0],
           category: CATEGORY
         });
-        
       }
     }
   }
