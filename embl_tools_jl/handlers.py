@@ -4,11 +4,11 @@ from notebook.base.handlers import APIHandler
 from notebook.utils import url_path_join
 import tornado
 import os
-import logging
+#import logging
 
 # /startup endpoint
 class Startup_handler(APIHandler):
-    logging.basicConfig(filename='./debug.log',filemode='w', format='%(levelname)s:%(message)s', level=logging.DEBUG)
+    #logging.basicConfig(filename='./debug.log',filemode='w', format='%(levelname)s:%(message)s', level=logging.DEBUG)
     @property
     def contents_manager(self):
         '''Currently configured notebook server ContentsManager.'''

@@ -16,7 +16,7 @@ import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
 
 const FACTORY = 'Notebook';
-const CATEGORY = 'EMBL Tools';
+const CATEGORY = 'EMBL Tools - 0.2.1';
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
 const TOOL_CATEGORY_MSA = 'Multiple Sequence Alignment (MSA)';
 const TOOL_CATEGORY_PSA = 'Pairwise Sequence Alignment (PSA)';
