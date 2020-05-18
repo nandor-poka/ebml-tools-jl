@@ -16,7 +16,7 @@ import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
 
 const FACTORY = 'Notebook';
-const CATEGORY = 'EMBL Tools - 0.2.1';
+const CATEGORY = 'EMBL Tools - 0.2.2';
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
 const TOOL_CATEGORY_MSA = 'Multiple Sequence Alignment (MSA)';
 const TOOL_CATEGORY_PSA = 'Pairwise Sequence Alignment (PSA)';
@@ -144,8 +144,9 @@ const extension: JupyterFrontEndPlugin<void> = {
         toolsMainMenu.addItem({ command: commandPrefix + 'emailSettings' });
       })
       .catch(reason => {
+        window.alert(`Failed to read EMBL-Tools settings from file.\n${reason}`);
         console.error(
-          `Something went wrong when reading the settings.\n${reason}`
+          `Failed to read EMBL-Tools settings from file.\n${reason}`
         );
       });
     // GET request
@@ -155,6 +156,10 @@ const extension: JupyterFrontEndPlugin<void> = {
       if (foundExtension) {
         emblToolsPath = PathExt.normalize(data.path);
       }
+      else{
+        window.alert(`EMBL-Tools not accesible from the root of current JupyterLab instance, thus EMBL-Tools will be disabled.\n`
+        +`Please run JupyterLab from a directory from which EMBL-Tools is accesible.`);
+      } 
     } catch (reason) {
       console.error(`Error on GET embl-tools-jl/startup.\n${reason}`);
     }

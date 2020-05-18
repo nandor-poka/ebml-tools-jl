@@ -90,7 +90,7 @@ const SettingsComponent = (props: any): JSX.Element => {
         Save settings
       </button>
       <br />
-      <h2 id="warningText" style={{ color: 'red' }} />
+      <h2 id="warningText" style={{ color: 'red', margin: '1em' }} />
     </div>
   );
 };
