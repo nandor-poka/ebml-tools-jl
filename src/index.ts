@@ -144,7 +144,9 @@ const extension: JupyterFrontEndPlugin<void> = {
         toolsMainMenu.addItem({ command: commandPrefix + 'emailSettings' });
       })
       .catch(reason => {
-        window.alert(`Failed to read EMBL-Tools settings from file.\n${reason}`);
+        window.alert(
+          `Failed to read EMBL-Tools settings from file.\n${reason}`
+        );
         console.error(
           `Failed to read EMBL-Tools settings from file.\n${reason}`
         );
@@ -155,11 +157,12 @@ const extension: JupyterFrontEndPlugin<void> = {
       foundExtension = data.found;
       if (foundExtension) {
         emblToolsPath = PathExt.normalize(data.path);
+      } else {
+        window.alert(
+          'EMBL-Tools not accesible from the root of current JupyterLab instance, thus EMBL-Tools will be disabled.\n' +
+            'Please run JupyterLab from a directory from which EMBL-Tools is accesible.'
+        );
       }
-      else{
-        window.alert(`EMBL-Tools not accesible from the root of current JupyterLab instance, thus EMBL-Tools will be disabled.\n`
-        +`Please run JupyterLab from a directory from which EMBL-Tools is accesible.`);
-      } 
     } catch (reason) {
       console.error(`Error on GET embl-tools-jl/startup.\n${reason}`);
     }
