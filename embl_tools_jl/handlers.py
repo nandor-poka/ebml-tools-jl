@@ -4,11 +4,13 @@ from notebook.base.handlers import APIHandler
 from notebook.utils import url_path_join
 import tornado
 import os
-#import logging
-
+import logging
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+__log_file_path = os.path.join(__location__, 'embl-tools-jl.log')
+logging.basicConfig(filename=__log_file_path, filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 # /startup endpoint
 class Startup_handler(APIHandler):
-    #logging.basicConfig(filename='./debug.log',filemode='w', format='%(levelname)s:%(message)s', level=logging.DEBUG)
+    
     @property
     def contents_manager(self):
         '''Currently configured notebook server ContentsManager.'''
@@ -32,7 +34,7 @@ class Startup_handler(APIHandler):
         except PermissionError:
             logging.warning('Permission denied: '+ path)
         except OSError as error:
-            logging.warning('OSError code: %i at %s ', error.errno, path)
+            logging.error('OSError code: %i at %s ', error.errno, path)
 
     # The following decorator should be present on all verb methods (head, get, post, 
     # patch, put, delete, options) to ensure only authorized user can request the 
@@ -94,10 +96,11 @@ class settingsHandler(APIHandler):
             self.finish(json.dumps({
                 'result': True
             }))
-        except Exception as exception:
+        except Exception as ex:
+            logging.error(f'Failed to save settings. {ex.__str__()}')
             self.finish(json.dumps({
                 'result': False,
-                'reason':  exception.__str__()
+                'reason':  ex.__str__()
             }))
 
 # /descriptions endpoint
@@ -105,7 +108,6 @@ class ToolDescriptionsHandler(APIHandler):
 
     @tornado.web.authenticated
     def get(self):
-        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         desc_file_path = os.path.join(__location__, 'toolDescriptions.json')
         descriptions = '{}'
         success = False
@@ -115,8 +117,9 @@ class ToolDescriptionsHandler(APIHandler):
                 descriptions = descriptions_file.read()
                 descriptions_file.close
                 success = True
-        except Exception as exception:
-            error_msg  = exception.__str__()
+        except Exception as ex:
+            error_msg  = ex.__str__()
+            logging.error(error_msg)
         self.finish(json.dumps({
             'success': success,
             'error_msg' : error_msg,
