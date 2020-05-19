@@ -65,7 +65,7 @@ setup_args = dict(
     cmdclass= cmdclass,
     packages=setuptools.find_packages(),
     install_requires=[
-        "jupyterlab~=2.0","xmltramp2~=3.1.1","ipyfilechooser~0.3.4"
+        "jupyterlab~=2.0"
     ],
     zip_safe=False,
     include_package_data=True,
