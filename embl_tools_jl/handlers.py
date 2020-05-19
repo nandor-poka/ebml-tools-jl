@@ -7,7 +7,13 @@ import os
 import logging
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 __log_file_path = os.path.join(__location__, 'embl-tools-jl.log')
-logging.basicConfig(filename=__log_file_path, filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+logFileHandler = logging.FileHandler(__log_file_path, mode='a', encoding='utf-8', delay=False)
+logFileHandler.setFormatter(formatter)
+logger.addHandler(logFileHandler)
+#logging.basicConfig(filename='./embl-tools-jl.log', filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 # /startup endpoint
 class Startup_handler(APIHandler):
     
@@ -25,16 +31,18 @@ class Startup_handler(APIHandler):
         try:
             for entry in os.scandir(path):
                 if entry.is_dir():
-                    if entry.name.lower() == 'embl-tools':
+                    if entry.name.lower() == 'embl-tools-jl':
+                        continue
+                    if entry.name.lower() == 'embl-tools' or entry.name.lower() == 'embl_tools':
                         return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name 
                     subdir_scan=self.scan_disk(entry.path)
                     if subdir_scan:
                         return subdir_scan
             return None
         except PermissionError:
-            logging.warning('Permission denied: '+ path)
+            logger.warning('Permission denied: '+ path)
         except OSError as error:
-            logging.error('OSError code: %i at %s ', error.errno, path)
+            logger.error('OSError code: %i at %s ', error.errno, path)
 
     # The following decorator should be present on all verb methods (head, get, post, 
     # patch, put, delete, options) to ensure only authorized user can request the 
@@ -62,10 +70,13 @@ class ToolsChecker_handler(APIHandler):
     
     def scan_disk(self, path):
         tool_file_names = []
-        for entry in os.scandir(path):
-            if entry.is_file() and entry.name.split('.')[-1] == 'ipynb':
-                tool_file_names.append(entry.name)
-        return tool_file_names
+        try:
+            for entry in os.scandir(path):
+                if entry.is_file() and entry.name.split('.')[-1] == 'ipynb':
+                    tool_file_names.append(entry.name)
+            return tool_file_names
+        except Exception as ex:
+            logger.error(ex.__str__())
 
     @tornado.web.authenticated
     def post(self):
@@ -97,7 +108,7 @@ class settingsHandler(APIHandler):
                 'result': True
             }))
         except Exception as ex:
-            logging.error(f'Failed to save settings. {ex.__str__()}')
+            logger.error(f'Failed to save settings. {ex.__str__()}')
             self.finish(json.dumps({
                 'result': False,
                 'reason':  ex.__str__()
@@ -119,7 +130,7 @@ class ToolDescriptionsHandler(APIHandler):
                 success = True
         except Exception as ex:
             error_msg  = ex.__str__()
-            logging.error(error_msg)
+            logger.error(error_msg)
         self.finish(json.dumps({
             'success': success,
             'error_msg' : error_msg,
@@ -127,6 +138,7 @@ class ToolDescriptionsHandler(APIHandler):
         }))    
 
 def setup_handlers(web_app):
+    logger.info('embl-tools-jl extension starting up.')
     host_pattern = '.*$'
     extension_url = 'embl-tools-jl'
     base_url = web_app.settings['base_url']
@@ -137,3 +149,4 @@ def setup_handlers(web_app):
     handlers = [(startup_pattern, Startup_handler), (toolcheck_pattern,ToolsChecker_handler ),
                 (saveSettings_pattern, settingsHandler), (getDescriptions_pattern, ToolDescriptionsHandler)]
     web_app.add_handlers(host_pattern, handlers)
+    logger.info('embl-tools-jl extension started.')
