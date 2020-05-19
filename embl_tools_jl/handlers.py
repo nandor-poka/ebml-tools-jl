@@ -25,7 +25,7 @@ class Startup_handler(APIHandler):
         try:
             for entry in os.scandir(path):
                 if entry.is_dir():
-                    if entry.name == 'EMBL-Tools':
+                    if entry.name.lower() == 'embl-tools':
                         return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name 
                     subdir_scan=self.scan_disk(entry.path)
                     if subdir_scan:

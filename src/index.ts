@@ -160,7 +160,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       } else {
         window.alert(
           'EMBL-Tools not accesible from the root of current JupyterLab instance, thus EMBL-Tools will be disabled.\n' +
-            'Please run JupyterLab from a directory from which EMBL-Tools is accesible.'
+            'Please run JupyterLab from a directory from which EMBL-Tools is accesible and is named "embl-tools".'
         );
       }
     } catch (reason) {

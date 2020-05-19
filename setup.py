@@ -57,13 +57,15 @@ setup_args = dict(
     version=version,
     url="https://github.com/nandor-poka/ebml-tools-jl",
     author="Dr. Nándor Póka",
+    author_email='np@np-bio.info',
+    maintainer = 'Dr. Nandor Poka',
     description="An extension adding Launcher shortcuts to JupyterLab for EMBL Tools",
     long_description= long_description,
     long_description_content_type="text/markdown",
     cmdclass= cmdclass,
     packages=setuptools.find_packages(),
     install_requires=[
-        "jupyterlab~=2.0",
+        "jupyterlab~=2.0","xmltramp2~=3.1.1","ipyfilechooser~0.3.4"
     ],
     zip_safe=False,
     include_package_data=True,
