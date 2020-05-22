@@ -26,7 +26,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/my_name/myextension.git"
+    "url": "git@github.com:nandor-poka/ebml-tools-jl.git"
   },
   "scripts": {
     "build": "jlpm run build:lib",
