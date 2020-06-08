@@ -5,15 +5,20 @@ from notebook.utils import url_path_join
 import tornado
 import os
 import logging
+import subprocess
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 __log_file_path = os.path.join(__location__, 'embl-tools-jl.log')
+__embl_tools_location__ = os.path.join(__location__,'../embl_tools/')
+_settings_file_location_ = os.path.join('/home/biodatahub/private/.embl_tools', 'settings.json')
+_settings = None
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 logFileHandler = logging.FileHandler(__log_file_path, mode='a', encoding='utf-8', delay=False)
 logFileHandler.setFormatter(formatter)
 logger.addHandler(logFileHandler)
-#logging.basicConfig(filename='./embl-tools-jl.log', filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+logger.propagate=False
+
 # /startup endpoint
 class Startup_handler(APIHandler):
     
@@ -50,6 +55,72 @@ class Startup_handler(APIHandler):
     @tornado.web.authenticated
     def get(self):
         embl_path = self.scan_disk(self.root_dir)
+        if embl_path == None:
+            logger.info(f'EMBL-Tools not found in current Jupyter Lab root dir: {self.root_dir}. Copying built in version as temporary solution.')
+            real_embl_path = os.path.join(self.root_dir,"embl_tools")
+            embl_path = os.path.relpath('embl_tools', self.root_dir)
+            logger.info(f'Executing: cp -R {__embl_tools_location__} {real_embl_path})')
+            old_location = None
+            try:
+                subprocess.run(['cp', '-R', f'{__embl_tools_location__}', f'{real_embl_path}'])
+                logger.info('Copying done.')
+            except Exception as ex:
+                logger.error(f'Failed to copy EMBL-tools to current Jupyer Lab location\n{ex}')
+            logger.info("Setting PYTHONPATH environmental variable.")
+            os.environ['PYTHONPATH']=f'{os.path.abspath(embl_path)}{os.pathsep}$PYTHONPATH'
+            
+            if not os.path.exists(_settings_file_location_):
+                try:
+                    logger.info(f'Settings file not found at: {_settings_file_location_}\nCreating empty settings file.')
+                    with open(_settings_file_location_, mode='w') as settingsFile:
+                            settingsFile.write(json.dumps({}))
+                            settingsFile.close()
+                except Exception as ex:
+                    logger.error(f'Failed create empty settings file.\n{ex}')
+
+            try:
+                with open(_settings_file_location_, mode='r') as settingsFile:
+                    settingsData = settingsFile.read()
+                    _settings = json.loads(settingsData)
+                    settingsFile.close()
+            except Exception as ex:
+                logger.error(f'Failed to read settings file at startup.\n{ex}')
+            old_location = None if 'tmploc' not in _settings else _settings['tmploc']
+            _settings['tmploc'] = real_embl_path
+
+            try:
+                with open(_settings_file_location_, mode='w') as settingsFile:
+                    settingsFile.write(json.dumps(_settings))
+                    settingsFile.close()
+            except Exception as ex:
+                logger.error(f'Failed write settings file at startup.\n{ex}')
+
+            if old_location != None and old_location != real_embl_path:
+                subprocess.run(['rm','-rf', f'{old_location}'])
+                logger.info(f'Removed EMBL-tools from old temporary location: {old_location}')
+        else:
+            logger.info(f'EMBL-Tools found at {os.path.abspath(embl_path)}')
+            logger.info("Setting PYTHONPATH environmental variable.")
+            os.environ['PYTHONPATH']=f'{os.path.abspath(embl_path)}{os.pathsep}$PYTHONPATH'
+            try:
+                if not os.path.exists(_settings_file_location_):
+                    logger.info(f'Settings file not found at: {_settings_file_location_}\nCreating empty settings file.')
+                    with open(_settings_file_location_, mode='w') as settingsFile:
+                        settingsFile.write(json.dumps({}))
+                        settingsFile.close()
+                        
+                with open(_settings_file_location_, mode='r') as settingsFile:
+                    settingsData = settingsFile.read()
+                    _settings = json.loads(settingsData)
+                    old_location = None if 'tmploc' not in _settings else _settings['tmploc']
+                    settingsFile.close()
+            except Exception as ex:
+                logger.error(f'Failed to read settings file at startup. {ex}')
+
+            if old_location != None and old_location != os.path.abspath(embl_path):
+                subprocess.run(['rm', '-rf', f'{old_location}'])
+                logger.info(f'Removed EMBL-tools from old temporary location: {old_location}')
+
         self.finish(json.dumps({
             'path': embl_path,
             'found': not(embl_path==None)
@@ -94,15 +165,21 @@ class settingsHandler(APIHandler):
         try:
             data = self.get_json_body()
             emailSetting = data['email']
-            outdirSetting = data['outdir']  
-            settingsFilePath = os.path.join('/home/biodatahub/private/.embl_tools', 'settings.json')
-            with open(settingsFilePath, mode='w') as settingsFile:
-                settingsFile.write(json.dumps({
-                    'email':emailSetting,
-                    'outdir':outdirSetting
-                }))
-                settingsFile.close
-            
+            outdirSetting = data['outdir']
+            if not os.path.exists(_settings_file_location_):
+                logger.info(f'Settings file not found at: {_settings_file_location_}\nCreating empty settings file.')
+                with open(_settings_file_location_, mode='w') as settingsFile:
+                    settingsFile.write(json.dumps({}))
+                    settingsFile.close()
+            with open(_settings_file_location_, mode='r') as settingsFile:
+                settingsData = settingsFile.read()
+                _settings = json.loads(settingsData)
+                settingsFile.close()
+            _settings['email'] = emailSetting
+            _settings['outdir'] = outdirSetting
+            with open(_settings_file_location_, mode='w') as settingsFile:
+                settingsFile.write(json.dumps(_settings))
+                settingsFile.close()
             self.finish(json.dumps({
                 'result': True
             }))
@@ -125,7 +202,7 @@ class ToolDescriptionsHandler(APIHandler):
         try:
             with open(desc_file_path, 'r') as descriptions_file:
                 descriptions = descriptions_file.read()
-                descriptions_file.close
+                descriptions_file.close()
                 success = True
         except Exception as ex:
             error_msg  = ex.__str__()
