@@ -113,5 +113,3 @@ dmypy.json
 
 # Lock files *.lock
 *.lock
-
-embl_tools/
