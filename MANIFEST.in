@@ -2,6 +2,8 @@ include LICENSE
 include README.md
 include pyproject.toml
 
+include embl_tools/**/*.*
+
 include jupyter-config/embl_tools_jl.json
 
 include package.json
