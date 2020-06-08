@@ -21,7 +21,7 @@ for the frontend extension.
 
 * JupyterLab >= 2.0
 
-**Scanning for the tools can take long and thus delay the startup of JupyterLab. It is recommended to put EMBL-Tools in the root of your regular work directory you use JupyterLab in.**
+**Scanning for the tools can take long and thus delay the startup of JupyterLab. It is recommended to put EMBL-Tools in the root of your regular work directory you use JupyterLab in. If the scan does not find the EMBL-Tools in the current Jupyter Lab working dir root, the extension will copy the supplied version for temporary use. This copy will be removed at the next startup.**
 
 
 ## Install
