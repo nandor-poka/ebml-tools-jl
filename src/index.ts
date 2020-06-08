@@ -15,9 +15,9 @@ import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
 
-const version = '0.2.5'
+const version = '0.2.5';
 const FACTORY = 'Notebook';
-const CATEGORY = 'EMBL Tools - '+version;
+const CATEGORY = 'EMBL Tools - ' + version;
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';
 const TOOL_CATEGORY_MSA = 'Multiple Sequence Alignment (MSA)';
 const TOOL_CATEGORY_PSA = 'Pairwise Sequence Alignment (PSA)';
@@ -109,7 +109,6 @@ const extension: JupyterFrontEndPlugin<void> = {
       console.log(`Settings are  set to '${email}' and flag to '${outdir}'`);
       requestAPI<any>('settings', {
         body: JSON.stringify({
-          path: emblToolsPath,
           email: email,
           outdir: outdir
         }),

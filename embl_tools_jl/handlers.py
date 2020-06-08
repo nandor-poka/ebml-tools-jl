@@ -93,10 +93,9 @@ class settingsHandler(APIHandler):
     def post(self):
         try:
             data = self.get_json_body()
-            emblTools_path = data['path']
             emailSetting = data['email']
             outdirSetting = data['outdir']  
-            settingsFilePath = os.path.join(emblTools_path, 'settings.json')
+            settingsFilePath = os.path.join('/home/biodatahub/private/.embl_tools', 'settings.json')
             with open(settingsFilePath, mode='w') as settingsFile:
                 settingsFile.write(json.dumps({
                     'email':emailSetting,
