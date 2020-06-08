@@ -2,6 +2,7 @@
 # embl-tools-jl
 
 ![Github Actions Status](https://github.com/nandor-poka/ebml-tools-jl/workflows/Build/badge.svg)
+[![PyPI version](https://badge.fury.io/py/embl-tools-jl.svg)](https://badge.fury.io/py/embl-tools-jl)
 
 ### Copyright (c) 2020, Dr. Nandor Poka
 ### Distributed under the terms of the 3-clause BSD License.
