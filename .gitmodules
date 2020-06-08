@@ -1,0 +1,3 @@
+[submodule "embl_tools"]
+	path = embl_tools
+	url = git@github.com:nandor-poka/embl_tools.git
