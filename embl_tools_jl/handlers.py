@@ -55,12 +55,12 @@ class Startup_handler(APIHandler):
     @tornado.web.authenticated
     def get(self):
         embl_path = self.scan_disk(self.root_dir)
+        old_location = None
         if embl_path == None:
             logger.info(f'EMBL-Tools not found in current Jupyter Lab root dir: {self.root_dir}. Copying built in version as temporary solution.')
             real_embl_path = os.path.join(self.root_dir,"embl_tools")
             embl_path = os.path.relpath('embl_tools', self.root_dir)
             logger.info(f'Executing: cp -R {__embl_tools_location__} {real_embl_path})')
-            old_location = None
             try:
                 subprocess.run(['cp', '-R', f'{__embl_tools_location__}', f'{real_embl_path}'])
                 logger.info('Copying done.')
