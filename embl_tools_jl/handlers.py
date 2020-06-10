@@ -9,7 +9,7 @@ import subprocess
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 __log_file_path = os.path.join(__location__, 'embl-tools-jl.log')
 __embl_tools_location__ = os.path.join(__location__,'../embl_tools/')
-_settings_file_dir_ = '/home/biodatahub/private/.embl_tools'
+_settings_file_dir_ = os.path.join(os.environ['HOME'],'private/.embl_tools')
 _settings_file_location_ = os.path.join(_settings_file_dir_, 'settings.json')
 _settings = None
 logger = logging.getLogger(__name__)
@@ -74,7 +74,7 @@ class Startup_handler(APIHandler):
                 if not os.path.exists(_settings_file_dir_):
                     logger.info(f'Creating parent directory for settings file: {_settings_file_dir_}')                   
                     try:
-                        os.mkdir(_settings_file_dir_)
+                        os.makedirs(_settings_file_dir_)
                         logger.info(f'{_settings_file_dir_} created.') 
                     except Exception as ex:
                         logger.error(f'Failed to create parent directory for settings file at: {_settings_file_dir_}\n{ex}')
@@ -85,7 +85,8 @@ class Startup_handler(APIHandler):
                             settingsFile.close()
                 except Exception as ex:
                     logger.error(f'Failed create empty settings file.\n{ex}')
-
+            else:
+                logger.info(f'Settings found at: {_settings_file_location_}')
             try:
                 with open(_settings_file_location_, mode='r') as settingsFile:
                     settingsData = settingsFile.read()
@@ -115,7 +116,7 @@ class Startup_handler(APIHandler):
                     if not os.path.exists(_settings_file_dir_):
                         logger.info(f'Creating parent directory for settings file: {_settings_file_dir_}')                   
                         try:
-                            os.mkdir(_settings_file_dir_)
+                            os.makedirs(_settings_file_dir_)
                             logger.info(f'{_settings_file_dir_} created.') 
                         except Exception as ex:
                             logger.error(f'Failed to create parent directory for settings file at: {_settings_file_dir_}\n{ex}')
@@ -186,7 +187,7 @@ class settingsHandler(APIHandler):
                 if not os.path.exists(_settings_file_dir_):
                     logger.info(f'Creating parent directory for settings file: {_settings_file_dir_}')                   
                     try:
-                        os.mkdir(_settings_file_dir_)
+                        os.makedirs(_settings_file_dir_)
                         logger.info(f'{_settings_file_dir_} created.') 
                     except Exception as ex:
                         logger.error(f'Failed to create parent directory for settings file at: {_settings_file_dir_}\n{ex}')
