@@ -31,7 +31,6 @@ const SettingsComponent = (props: any): JSX.Element => {
           type="text"
           id="email"
           name="email"
-          value={settings.get('email').composite as string}
         />
       </p>
       <p style={margin}>
@@ -40,7 +39,6 @@ const SettingsComponent = (props: any): JSX.Element => {
           type="text"
           id="outdir"
           name="outdir"
-          value={settings.get('outdir').composite as string}
         />
       </p>
       <br />
