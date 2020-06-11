@@ -69,7 +69,6 @@ const SettingsComponent = (props: any): JSX.Element => {
             ) {
               (document.getElementById('outdir') as HTMLInputElement).value =
                 './results';
-              
             }
           }
           if (
