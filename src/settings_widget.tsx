@@ -26,11 +26,22 @@ const SettingsComponent = (props: any): JSX.Element => {
       </h3>
       <h2 style={margin}>Change Settings</h2>
       <p style={margin}>
-        Set default email: <input type="text" id="email" name="email" />
+        Set default email:{' '}
+        <input
+          type="text"
+          id="email"
+          name="email"
+          value={settings.get('email').composite as string}
+        />
       </p>
       <p style={margin}>
         Set default output directory:
-        <input type="text" id="outdir" name="outdir" />
+        <input
+          type="text"
+          id="outdir"
+          name="outdir"
+          value={settings.get('outdir').composite as string}
+        />
       </p>
       <br />
       <br />
@@ -38,13 +49,20 @@ const SettingsComponent = (props: any): JSX.Element => {
         style={margin}
         onClick={async (): Promise<void> => {
           if (
-            (document.getElementById('email') as HTMLInputElement).value ===
-              '' ||
+            (document.getElementById('email') as HTMLInputElement).value === ''
+          ) {
+            (document.getElementById(
+              'email'
+            ) as HTMLInputElement).value = settings.get('email')
+              .composite as string;
+          }
+          if (
             (document.getElementById('outdir') as HTMLInputElement).value === ''
           ) {
-            document.getElementById('warningText').innerHTML =
-              'Email and output directory cannot be empty.';
-            return;
+            (document.getElementById(
+              'outdir'
+            ) as HTMLInputElement).value = settings.get('outdir')
+              .composite as string;
           }
           if (
             !(document.getElementById('email') as HTMLInputElement).value.match(
