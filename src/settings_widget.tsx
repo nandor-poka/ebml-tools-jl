@@ -26,20 +26,11 @@ const SettingsComponent = (props: any): JSX.Element => {
       </h3>
       <h2 style={margin}>Change Settings</h2>
       <p style={margin}>
-        Set default email:{' '}
-        <input
-          type="text"
-          id="email"
-          name="email"
-        />
+        Set default email: <input type="text" id="email" name="email" />
       </p>
       <p style={margin}>
         Set default output directory:
-        <input
-          type="text"
-          id="outdir"
-          name="outdir"
-        />
+        <input type="text" id="outdir" name="outdir" />
       </p>
       <br />
       <br />
