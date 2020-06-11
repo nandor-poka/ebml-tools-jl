@@ -15,7 +15,7 @@ import { MainAreaWidget, ICommandPalette } from '@jupyterlab/apputils';
 import embLogo from '../style/EMBL_logo.svg';
 import { SettingsWidget } from './settings_widget';
 
-const version = '0.3.0';
+const version = '0.3.1';
 const FACTORY = 'Notebook';
 const CATEGORY = 'EMBL Tools - ' + version;
 const PLUGIN_ID = 'embl-tools-jl:launcher-icons';

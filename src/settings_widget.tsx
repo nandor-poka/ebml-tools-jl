@@ -63,6 +63,14 @@ const SettingsComponent = (props: any): JSX.Element => {
               'outdir'
             ) as HTMLInputElement).value = settings.get('outdir')
               .composite as string;
+            if (
+              (document.getElementById('outdir') as HTMLInputElement).value ===
+              ''
+            ) {
+              (document.getElementById('outdir') as HTMLInputElement).value =
+                './results';
+              
+            }
           }
           if (
             !(document.getElementById('email') as HTMLInputElement).value.match(
