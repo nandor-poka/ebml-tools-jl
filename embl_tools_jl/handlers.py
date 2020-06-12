@@ -16,7 +16,7 @@ try:
     if not os.path.exists(_private_dir):
         os.makedirs(_private_dir)
 except Exception as ex:
-    print("Failed to create directory for private data.")
+    print(f'Failed to create directory for private data. {ex}'')
     
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -31,12 +31,12 @@ class Startup_handler(APIHandler):
     
     @property
     def contents_manager(self):
-        '''Currently configured notebook server ContentsManager.'''
+        'Currently configured notebook server ContentsManager.'
         return self.settings['contents_manager']
 
     @property
     def root_dir(self):
-        '''Root directory to scan.'''
+        'Root directory to scan.'
         return self.contents_manager.root_dir
 
     def scan_disk(self, path):
@@ -46,7 +46,7 @@ class Startup_handler(APIHandler):
                     if entry.name.lower() == 'embl-tools-jl':
                         continue
                     if entry.name.lower() == 'embl-tools' or entry.name.lower() == 'embl_tools':
-                        return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name 
+                        return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name
                     subdir_scan=self.scan_disk(entry.path)
                     if subdir_scan:
                         return subdir_scan
@@ -57,7 +57,7 @@ class Startup_handler(APIHandler):
             logger.error('OSError code: %i at %s ', error.errno, path)
 
     # The following decorator should be present on all verb methods (head, get, post, 
-    # patch, put, delete, options) to ensure only authorized user can request the 
+    # patch, put, delete, options) to ensure only authorized user can request the
     # Jupyter server
     @tornado.web.authenticated
     def get(self):
@@ -78,12 +78,12 @@ class Startup_handler(APIHandler):
             
             if not os.path.exists(_settings_file_location):
                 if not os.path.exists(_private_dir):
-                    logger.info(f'Creating parent directory for settings file: {_settings_file_dir_}')                   
+                    logger.info(f'Creating parent directory for settings file: {_private_dir}')
                     try:
                         os.makedirs(_private_dir)
-                        logger.info(f'{_settings_file_dir_} created.') 
+                        logger.info(f'{_private_dir} created.') 
                     except Exception as ex:
-                        logger.error(f'Failed to create parent directory for settings file at: {_settings_file_dir_}\n{ex}')
+                        logger.error(f'Failed to create parent directory for settings file at: {_private_dir}\n{ex}')
                 try:
                     logger.info(f'Settings file not found at: {_settings_file_location}\nCreating empty settings file.')
                     with open(_settings_file_location, mode='w') as settingsFile:
@@ -120,12 +120,12 @@ class Startup_handler(APIHandler):
             try:
                 if not os.path.exists(_settings_file_location):
                     if not os.path.exists(_private_dir):
-                        logger.info(f'Creating parent directory for settings file: {_settings_file_dir_}')                   
+                        logger.info(f'Creating parent directory for settings file: {_private_dir}')                   
                         try:
                             os.makedirs(_private_dir)
-                            logger.info(f'{_settings_file_dir_} created.') 
+                            logger.info(f'{_private_dir} created.') 
                         except Exception as ex:
-                            logger.error(f'Failed to create parent directory for settings file at: {_settings_file_dir_}\n{ex}')
+                            logger.error(f'Failed to create parent directory for settings file at: {_private_dir}\n{ex}')
                     logger.info(f'Settings file not found at: {_settings_file_location}\nCreating empty settings file.')
                     with open(_settings_file_location, mode='w') as settingsFile:
                         settingsFile.write(json.dumps({}))
@@ -191,12 +191,12 @@ class settingsHandler(APIHandler):
             if not os.path.exists(_settings_file_location):
                 logger.info(f'Settings file not found at: {_settings_file_location}\nCreating empty settings file.')
                 if not os.path.exists(_private_dir):
-                    logger.info(f'Creating parent directory for settings file: {_settings_file_dir_}')                   
+                    logger.info(f'Creating parent directory for settings file: {_private_dir}')                   
                     try:
                         os.makedirs(_private_dir)
-                        logger.info(f'{_settings_file_dir_} created.') 
+                        logger.info(f'{_private_dir} created.') 
                     except Exception as ex:
-                        logger.error(f'Failed to create parent directory for settings file at: {_settings_file_dir_}\n{ex}')
+                        logger.error(f'Failed to create parent directory for settings file at: {_private_dirss}\n{ex}')
                 
                 with open(_settings_file_location, mode='w') as settingsFile:
                     settingsFile.write(json.dumps({}))

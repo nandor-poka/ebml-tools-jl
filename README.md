@@ -1,11 +1,10 @@
-
 # embl-tools-jl
 
 ![Github Actions Status](https://github.com/nandor-poka/ebml-tools-jl/workflows/Build/badge.svg)
 [![PyPI version](https://badge.fury.io/py/embl-tools-jl.svg)](https://badge.fury.io/py/embl-tools-jl)
 
-### Copyright (c) 2020, Dr. Nandor Poka
-### Distributed under the terms of the 3-clause BSD License.
+## Copyright (c) 2020, Dr. Nandor Poka
+## Distributed under the terms of the 3-clause BSD License.
 
 An extension adding Launcher shortcuts to JupyterLab for EMBL Tools.
 
@@ -23,8 +22,7 @@ for the frontend extension.
 
 **Scanning for the tools can take long and thus delay the startup of JupyterLab. It is recommended to put EMBL-Tools in the root of your regular work directory you use JupyterLab in. If the scan does not find the EMBL-Tools in the current Jupyter Lab working dir root, the extension will copy the supplied version for temporary use. This copy will be removed at the next startup.**
 
-
-## Install
+## Quick Install
 
 Note: You will need NodeJS to install the extension.
 
