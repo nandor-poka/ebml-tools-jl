@@ -14,6 +14,12 @@
         "title": "Default save directory",
         "description": "Path of the directory where result should be saved.",
         "default": "./"
+      },
+      "tmploc": {
+        "type": "string",
+        "title": "Temporary location for the EMBL-Tools",
+        "description": "Path were the EMBL-Tools can be found, when copied from this extension",
+        "default": ""
       }
     }
 }

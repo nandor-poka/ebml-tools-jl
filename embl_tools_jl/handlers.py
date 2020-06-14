@@ -16,7 +16,7 @@ try:
     if not os.path.exists(_private_dir):
         os.makedirs(_private_dir)
 except Exception as ex:
-    print(f'Failed to create directory for private data. {ex}'')
+    print(f'Failed to create directory for private data. {ex}')
     
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -43,7 +43,9 @@ class Startup_handler(APIHandler):
         try:
             for entry in os.scandir(path):
                 if entry.is_dir():
-                    if entry.name.lower() == 'embl-tools-jl':
+                    if entry.name.startswith('.'):
+                        continue
+                    if entry.name.lower() in ['build', 'lib']:
                         continue
                     if entry.name.lower() == 'embl-tools' or entry.name.lower() == 'embl_tools':
                         return os.path.relpath(os.path.dirname(entry.path), self.root_dir)+'/'+entry.name
@@ -117,20 +119,19 @@ class Startup_handler(APIHandler):
             logger.info(f'EMBL-Tools found at {os.path.abspath(embl_path)}')
             logger.info("Setting PYTHONPATH environmental variable.")
             os.environ['PYTHONPATH']=f'{os.path.abspath(embl_path)}{os.pathsep}$PYTHONPATH'
+            if not os.path.exists(_settings_file_location):
+                if not os.path.exists(_private_dir):
+                    logger.info(f'Creating parent directory for settings file: {_private_dir}')                   
+                    try:
+                        os.makedirs(_private_dir)
+                        logger.info(f'{_private_dir} created.') 
+                    except Exception as ex:
+                        logger.error(f'Failed to create parent directory for settings file at: {_private_dir}\n{ex}')
+                logger.info(f'Settings file not found at: {_settings_file_location}\nCreating empty settings file.')
+                with open(_settings_file_location, mode='w') as settingsFile:
+                    settingsFile.write(json.dumps({}))
+                    settingsFile.close()  
             try:
-                if not os.path.exists(_settings_file_location):
-                    if not os.path.exists(_private_dir):
-                        logger.info(f'Creating parent directory for settings file: {_private_dir}')                   
-                        try:
-                            os.makedirs(_private_dir)
-                            logger.info(f'{_private_dir} created.') 
-                        except Exception as ex:
-                            logger.error(f'Failed to create parent directory for settings file at: {_private_dir}\n{ex}')
-                    logger.info(f'Settings file not found at: {_settings_file_location}\nCreating empty settings file.')
-                    with open(_settings_file_location, mode='w') as settingsFile:
-                        settingsFile.write(json.dumps({}))
-                        settingsFile.close()
-                        
                 with open(_settings_file_location, mode='r') as settingsFile:
                     settingsData = settingsFile.read()
                     _settings = json.loads(settingsData)
@@ -138,11 +139,19 @@ class Startup_handler(APIHandler):
                     settingsFile.close()
             except Exception as ex:
                 logger.error(f'Failed to read settings file at startup. {ex}')
-
-            if old_location != None and old_location != os.path.abspath(embl_path):
-                subprocess.run(['rm', '-rf', f'{old_location}'])
-                logger.info(f'Removed EMBL-tools from old temporary location: {old_location}')
-
+            try:
+                if old_location != None and old_location != os.path.abspath(embl_path):
+                    subprocess.run(['rm', '-rf', f'{old_location}'])
+                    logger.info(f'Removed EMBL-Tools from old temporary location: {old_location}')
+                    _settings['tmploc']=''
+                    with open(_settings_file_location, mode='w') as settingsFile:
+                        settingsFile.write(json.dumps({}))
+                        settingsFile.close()  
+            except subprocess.SubprocessError as ex:
+                logger.error(f'Failed to remove EMBL-Tools from old location: {old_location}.\n{ex}')
+            except Exception as ex:
+                logger.error(f'Failed to write new temp location data to settings.\n{ex}')
+                
         self.finish(json.dumps({
             'path': embl_path,
             'found': not(embl_path==None)
@@ -196,7 +205,7 @@ class settingsHandler(APIHandler):
                         os.makedirs(_private_dir)
                         logger.info(f'{_private_dir} created.') 
                     except Exception as ex:
-                        logger.error(f'Failed to create parent directory for settings file at: {_private_dirss}\n{ex}')
+                        logger.error(f'Failed to create parent directory for settings file at: {_private_dir}\n{ex}')
                 
                 with open(_settings_file_location, mode='w') as settingsFile:
                     settingsFile.write(json.dumps({}))
